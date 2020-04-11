@@ -34,15 +34,17 @@ Partial Class MainForm
         Me.mnu灰度直方图 = New System.Windows.Forms.ToolStripMenuItem()
         Me.灰度图像二值化ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.图像二值化ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.灰度变换ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Panel = New System.Windows.Forms.PictureBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.ToolStripOpen = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
-        Me.灰度变换ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripOpen = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -120,6 +122,12 @@ Partial Class MainForm
         Me.图像二值化ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.图像二值化ToolStripMenuItem.Text = "图像二值化"
         '
+        '灰度变换ToolStripMenuItem
+        '
+        Me.灰度变换ToolStripMenuItem.Name = "灰度变换ToolStripMenuItem"
+        Me.灰度变换ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.灰度变换ToolStripMenuItem.Text = "灰度变换"
+        '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2})
@@ -157,12 +165,26 @@ Partial Class MainForm
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripOpen, Me.ToolStripTextBox1})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripOpen, Me.ToolStripTextBox1, Me.ToolStripSeparator1, Me.ToolStripButton1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 25)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(766, 25)
         Me.ToolStrip1.TabIndex = 3
         Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'ToolStripTextBox1
+        '
+        Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
+        Me.ToolStripTextBox1.Size = New System.Drawing.Size(100, 25)
+        '
+        'ToolStripButton1
+        '
+        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
+        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton1.Name = "ToolStripButton1"
+        Me.ToolStripButton1.Size = New System.Drawing.Size(60, 22)
+        Me.ToolStripButton1.Text = "重读图像"
         '
         'ToolStripOpen
         '
@@ -173,17 +195,10 @@ Partial Class MainForm
         Me.ToolStripOpen.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripOpen.Text = "ToolStripOpen"
         '
-        'ToolStripTextBox1
+        'ToolStripSeparator1
         '
-        Me.ToolStripTextBox1.Font = New System.Drawing.Font("Microsoft YaHei UI", 9.0!)
-        Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
-        Me.ToolStripTextBox1.Size = New System.Drawing.Size(100, 25)
-        '
-        '灰度变换ToolStripMenuItem
-        '
-        Me.灰度变换ToolStripMenuItem.Name = "灰度变换ToolStripMenuItem"
-        Me.灰度变换ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.灰度变换ToolStripMenuItem.Text = "灰度变换"
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
         'MainForm
         '
@@ -220,7 +235,6 @@ Partial Class MainForm
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents 左右翻转ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-    Friend WithEvents ToolStripOpen As System.Windows.Forms.ToolStripButton
     Friend WithEvents mnu灰度直方图 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents 灰度图像二值化ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
@@ -228,4 +242,7 @@ Partial Class MainForm
     Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
     Friend WithEvents 图像二值化ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 灰度变换ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripButton1 As ToolStripButton
+    Friend WithEvents ToolStripOpen As ToolStripButton
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
 End Class

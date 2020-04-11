@@ -164,6 +164,28 @@
 
     End Sub
 
+    Private Sub 灰度变换ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 灰度变换ToolStripMenuItem.Click
+        mImage.Calculate_Histogram()
+        If Not FrmChangeGray.Visible Then
+            FrmChangeGray.m_Image = mImage
+            FrmChangeGray.Show(Me)
+        Else
+            FrmChangeGray.Refresh()
+        End If
+    End Sub
+
+    Private Sub ToolStripButton1_Click(sender As Object, e As EventArgs) Handles ToolStripButton1.Click
+        mImage.ReadImage(ImageName) '有可能造成内存泄漏
+        ToolStripStatusLabel2.Text = "图像大小：" & mImage.Width & "*" & mImage.Height
+
+        Panel.Refresh()
+
+        If HistogramForm.Visible Then
+            mImage.Calculate_Histogram()
+            HistogramForm.Refresh()
+        End If
+    End Sub
+
     Private Sub 上下翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 上下翻转ToolStripMenuItem.Click
         mImage.MirrorX()
         Panel.Refresh()
