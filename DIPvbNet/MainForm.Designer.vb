@@ -41,10 +41,11 @@ Partial Class MainForm
         Me.Panel = New System.Windows.Forms.PictureBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripOpen = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
+        Me.直方图规定化ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -75,7 +76,7 @@ Partial Class MainForm
         '
         '编辑ToolStripMenuItem
         '
-        Me.编辑ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.负片ToolStripMenuItem, Me.上下翻转ToolStripMenuItem, Me.中心镜像ToolStripMenuItem, Me.左右翻转ToolStripMenuItem, Me.mnu灰度直方图, Me.灰度图像二值化ToolStripMenuItem, Me.图像二值化ToolStripMenuItem, Me.灰度变换ToolStripMenuItem})
+        Me.编辑ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.负片ToolStripMenuItem, Me.上下翻转ToolStripMenuItem, Me.中心镜像ToolStripMenuItem, Me.左右翻转ToolStripMenuItem, Me.mnu灰度直方图, Me.灰度图像二值化ToolStripMenuItem, Me.图像二值化ToolStripMenuItem, Me.灰度变换ToolStripMenuItem, Me.直方图规定化ToolStripMenuItem})
         Me.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem"
         Me.编辑ToolStripMenuItem.Size = New System.Drawing.Size(44, 21)
         Me.编辑ToolStripMenuItem.Text = "编辑"
@@ -172,10 +173,25 @@ Partial Class MainForm
         Me.ToolStrip1.TabIndex = 3
         Me.ToolStrip1.Text = "ToolStrip1"
         '
+        'ToolStripOpen
+        '
+        Me.ToolStripOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripOpen.Image = CType(resources.GetObject("ToolStripOpen.Image"), System.Drawing.Image)
+        Me.ToolStripOpen.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripOpen.Name = "ToolStripOpen"
+        Me.ToolStripOpen.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripOpen.Text = "ToolStripOpen"
+        '
         'ToolStripTextBox1
         '
+        Me.ToolStripTextBox1.Font = New System.Drawing.Font("Microsoft YaHei UI", 9.0!)
         Me.ToolStripTextBox1.Name = "ToolStripTextBox1"
         Me.ToolStripTextBox1.Size = New System.Drawing.Size(100, 25)
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
         'ToolStripButton1
         '
@@ -186,19 +202,11 @@ Partial Class MainForm
         Me.ToolStripButton1.Size = New System.Drawing.Size(60, 22)
         Me.ToolStripButton1.Text = "重读图像"
         '
-        'ToolStripOpen
+        '直方图规定化ToolStripMenuItem
         '
-        Me.ToolStripOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripOpen.Image = CType(resources.GetObject("ToolStripOpen.Image"), System.Drawing.Image)
-        Me.ToolStripOpen.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripOpen.Name = "ToolStripOpen"
-        Me.ToolStripOpen.Size = New System.Drawing.Size(23, 22)
-        Me.ToolStripOpen.Text = "ToolStripOpen"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        Me.直方图规定化ToolStripMenuItem.Name = "直方图规定化ToolStripMenuItem"
+        Me.直方图规定化ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.直方图规定化ToolStripMenuItem.Text = "直方图规定化"
         '
         'MainForm
         '
@@ -245,4 +253,5 @@ Partial Class MainForm
     Friend WithEvents ToolStripButton1 As ToolStripButton
     Friend WithEvents ToolStripOpen As ToolStripButton
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents 直方图规定化ToolStripMenuItem As ToolStripMenuItem
 End Class

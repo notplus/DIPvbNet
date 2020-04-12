@@ -82,6 +82,12 @@
     <Compile Include="FrmChangeGray.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmHistMatch.Designer.vb">
+      <DependentUpon>FrmHistMatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmHistMatch.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HistogramForm.Designer.vb">
       <DependentUpon>HistogramForm.vb</DependentUpon>
     </Compile>
@@ -115,6 +121,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmChangeGray.resx">
       <DependentUpon>FrmChangeGray.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmHistMatch.resx">
+      <DependentUpon>FrmHistMatch.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HistogramForm.resx">
       <DependentUpon>HistogramForm.vb</DependentUpon>

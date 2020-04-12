@@ -1032,4 +1032,12 @@
         'getBitMapData()
         'Calculate_Histogram()
     End Sub
+
+    Public Function GetmHist(ByRef ptr() As Long) As Boolean
+        Array.Copy(mHist, ptr, 256)
+    End Function
+
+    Public Function GetmPixels() As Long
+        Return mPixels
+    End Function
 End Class

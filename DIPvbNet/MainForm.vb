@@ -191,6 +191,16 @@
         Panel.Refresh()
     End Sub
 
+    Private Sub 直方图规定化ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 直方图规定化ToolStripMenuItem.Click
+        mImage.Calculate_Histogram()
+        If Not FrmHistMatch.Visible Then
+            FrmHistMatch.SetImageClass(mImage)
+            FrmHistMatch.Show(Me)
+        Else
+            FrmHistMatch.Refresh()
+        End If
+    End Sub
+
     Private Sub 左右翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 左右翻转ToolStripMenuItem.Click
         mImage.MirrorY()
         Panel.Refresh()

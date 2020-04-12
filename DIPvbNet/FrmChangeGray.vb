@@ -217,7 +217,6 @@
         a = Val(TextBox7.Text)
         b = Val(TextBox8.Text)
         c = Val(TextBox9.Text)
-        Dim gg As Double
         If RadioButtonExp.Checked = True Then
             If tImageType = 0 Then
                 For i = 0 To 255
