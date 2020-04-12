@@ -167,7 +167,7 @@
     Private Sub 灰度变换ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 灰度变换ToolStripMenuItem.Click
         mImage.Calculate_Histogram()
         If Not FrmChangeGray.Visible Then
-            FrmChangeGray.m_Image = mImage
+            FrmChangeGray.SetImageClass(mImage)
             FrmChangeGray.Show(Me)
         Else
             FrmChangeGray.Refresh()
@@ -246,4 +246,8 @@
     Private Sub MainForm_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
         'mImage.Display(Panel.CreateGraphics, mImage.Width, mImage.Height)
     End Sub
+
+    Public Function ChangeImageClass(ByRef newImageClass As ImageClass) As Boolean
+        mImage = newImageClass
+    End Function
 End Class

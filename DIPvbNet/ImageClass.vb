@@ -30,11 +30,7 @@
     Private mPanel As PictureBox ' 绘制图片的控件
     Public pBar As ToolStripProgressBar
     Private matHist As System.Drawing.Drawing2D.Matrix
-    ' 灰度变换
-    Private transformG(255) As Byte
-    Private transformGR(255) As Byte
-    Private transformGG(255) As Byte
-    Private transformGB(255) As Byte
+
 
     ' 读取图像文件。实现图像对象由文件初始化的过程
     Public Function ReadImage(ByVal ImageName As String) As Integer
@@ -937,22 +933,9 @@
         End If
     End Sub
 
-    Public Function getBitData(ByRef dest() As Byte) As Boolean
-        If mImageType = 0 Then
-            ReDim dest(mSize - 1)
-            Array.Copy(ImageB, dest, mSize)
-        ElseIf mImageType = 1 Then
-            ReDim dest(CSize - 1)
-            Array.Copy(ImageC, dest, CSize)
-        End If
-
-
-    End Function
-
-    Public Function histEqualize() As Boolean
-        Dim p(255), pr(255), pg(255), pb(255) As Double
-        Dim s(255), sr(255), sg(255), sb(255) As Double
-        Dim pos As Long
+    Public Function histEqualize(ByRef transformG() As Byte) As Boolean
+        Dim p(255) As Double
+        Dim s(255) As Double
         If mImageType = 0 Then
             For i = 0 To 255
                 p(i) = mHist(i) / CDbl(mPixels)
@@ -964,28 +947,55 @@
             For i = 0 To 255
                 transformG(i) = CInt(s(i) * 255)
             Next
-            For i = 0 To mHeight - 1
-                For j = 0 To mWidth - 1
-                    ImageB(i * mFwidth + j) = transformG(ImageB(i * mFwidth + j))
-                Next
-            Next
-        ElseIf mImageType = 1 Then
+            Return True
+        End If
+
+    End Function
+    Public Function histEqualize(ByRef transformG() As Byte, ByRef transformGR() As Byte, ByRef transformGG() As Byte, ByRef transformGB() As Byte) As Boolean
+        Dim p(255), pr(255), pg(255), pb(255) As Double
+        Dim s(255), sr(255), sg(255), sb(255) As Double
+
+        If mImageType = 1 Then
             For i = 0 To 255
+                p(i) = mHist(i) / CDbl(mPixels)
                 pr(i) = rHist(i) / CDbl(mPixels)
                 pg(i) = gHist(i) / CDbl(mPixels)
                 pb(i) = bHist(i) / CDbl(mPixels)
             Next
-            sr(0) = pr(0) : sg(0) = pg(0) : sb(0) = pb(0)
+            s(0) = p(0) : sr(0) = pr(0) : sg(0) = pg(0) : sb(0) = pb(0)
             For i = 1 To 255
+                s(i) = s(i - 1) + p(i)
                 sr(i) = sr(i - 1) + pr(i)
                 sg(i) = sg(i - 1) + pg(i)
                 sb(i) = sb(i - 1) + pb(i)
             Next
             For i = 0 To 255
+                transformG(i) = CInt(s(i) * 255)
                 transformGR(i) = CInt(sr(i) * 255)
                 transformGG(i) = CInt(sg(i) * 255)
                 transformGB(i) = CInt(sb(i) * 255)
             Next
+            Return True
+        End If
+
+
+    End Function
+
+    Public Function GrayTransform(ByVal transformG() As Byte) As Boolean
+        If mImageType = 0 Then
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    ImageB(i * mFwidth + j) = transformG(ImageB(i * mFwidth + j))
+                Next
+            Next
+            putBitMapData()
+            Return True
+        End If
+
+    End Function
+    Public Function GrayTransform(ByVal transformGR() As Byte, ByVal transformGG() As Byte, ByVal transformGB() As Byte) As Boolean
+        If mImageType = 1 Then
+            Dim pos As Long
             For i = 0 To mHeight - 1
                 For j = 0 To mWidth - 1
                     pos = Cpos(i) + j * 3
@@ -994,71 +1004,32 @@
                     ImageC(pos + 2) = transformGR(ImageC(pos + 2))
                 Next
             Next
-        End If
-
-
-    End Function
-
-    Public Function enableChanges() As Boolean
-        putBitMapData()
-    End Function
-
-    Public Function DrawCurve(ByVal g As Graphics, ByVal w As Integer, ByVal h As Integer) As Boolean
-        ' w 是绘制曲线的画板宽度，h 是绘制曲线的画板高度
-        ' 基本原则是：横向和纵向需要做适当的变换，使得横坐标范围能容纳0-255灰度级，纵向能容纳0-MaxH。
-        ' 在边缘部分应该留有一定的空间
-        ' 已知值mHist(0~255) as long，表示0-255灰度值的像素个数
-        Dim sx As Single, sy As Single
-        Dim x1 As Single, y1 As Single, x2 As Single, y2 As Single
-        Dim x0 As Single, y0 As Single
-        Dim ft As Font = New Font("Arial Narrow", 8, FontStyle.Regular, GraphicsUnit.Point)
-        Dim B As Brush = New SolidBrush(Color.Black)
-        'Dim r As RectangleF
-        Dim p As New Pen(Color.Red)  '指定课绘制坐标轴线的颜色
-        If mImageType = 0 Then
-            ' 256，h * 0.9   => 270, h
-            ' 假定横向的最大为270
-            ' 直方图有效区域为（0,5%*h）-（255,10%*h）
-            sx = w / 270.0 ' 设定宽度为270
-            sy = h / (255 * 1.2) ' 高度放大20%
-            g.ScaleTransform(sx, -sy) ' 设置比例系数，纵向为负表示把竖轴的原点移到下面
-            x0 = 5.0
-            y0 = -255 * 1.1   ' 图形原点（0,0）上移10%
-            g.TranslateTransform(x0, y0) ' 设置坐标偏移
-
-            ' 首先绘制坐标轴，纵横线
-            x1 = -3  ' 横轴线起点于-3
-            y1 = 0   ' 横轴线
-            x2 = 260 '横轴线终止于260 
-            y2 = y1 ' 横轴线为水平线
-            g.DrawLine(p, x1, y1, x2, y2)  ' 绘制（x1,y1）-（x2,y2）
-            x1 = 0 ' 竖轴线
-            y1 = 255 * 1.05   ' 竖轴线起始于下部5%至顶部5%（注意横轴线在离底部5%处）
-            x2 = x1
-            y2 = -255 * 0.025
-            g.DrawLine(p, x1, y1, x2, y2)
-
-            B.Dispose()
-            p.Dispose()
-            Dim p1 As New Pen(Color.Black)
-
-            x1 = 0
-            y1 = transformG(0)
-            For i = 0 To 254
-                x2 = i + 1
-                y2 = transformG(i + 1)
-                g.DrawLine(p1, x1, y1, x2, y2)
-                x1 = x2
-                y1 = y2
-            Next
-            p1.Dispose()
+            putBitMapData()
             Return True
         End If
+
     End Function
 
-    Public Function modifyBitData(ByVal source() As Byte) As Boolean
-        If mImageType = 0 Then
-            Array.Copy(source, ImageB, mSize)
-        End If
+    Public Function Clone(ByRef m_image_ptr As ImageClass) As Boolean
+        m_image_ptr = New ImageClass(mImg)
+
+        'm_image_ptr.ReadImage(mImageName)
+        m_image_ptr.getBitMapData()
+        m_image_ptr.Calculate_Histogram()
     End Function
+
+    Public Function GetImageType() As Integer
+        Return mImageType
+    End Function
+
+    Public Sub New(ByRef a_bitmap As Bitmap)
+        mImg = a_bitmap.Clone()
+        isOpened = True
+        xWmin = 0
+        yWmin = 0
+        xWmax = mImg.Width - 1    ' 取得图像的宽度
+        yWmax = mImg.Height - 1   ' 取得图像的高度
+        'getBitMapData()
+        'Calculate_Histogram()
+    End Sub
 End Class

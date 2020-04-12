@@ -30,9 +30,8 @@ Partial Class FrmChangeGray
         Me.RadioButtonCurve = New System.Windows.Forms.RadioButton()
         Me.RadioButtonLinear = New System.Windows.Forms.RadioButton()
         Me.GroupBoxCurve = New System.Windows.Forms.GroupBox()
-        Me.DomainUpDown1 = New System.Windows.Forms.DomainUpDown()
-        Me.RadioButton6 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton5 = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonExp = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonLog = New System.Windows.Forms.RadioButton()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
@@ -48,6 +47,14 @@ Partial Class FrmChangeGray
         Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBoxLinear = New System.Windows.Forms.GroupBox()
         Me.LabelCursorPosition = New System.Windows.Forms.Label()
+        Me.TextBox7 = New System.Windows.Forms.TextBox()
+        Me.TextBox8 = New System.Windows.Forms.TextBox()
+        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button3 = New System.Windows.Forms.Button()
         CType(Me.ChangedHistPanel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OriginHistPanel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FunctionCurve, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -128,45 +135,43 @@ Partial Class FrmChangeGray
         '
         'GroupBoxCurve
         '
-        Me.GroupBoxCurve.Controls.Add(Me.DomainUpDown1)
-        Me.GroupBoxCurve.Controls.Add(Me.RadioButton6)
-        Me.GroupBoxCurve.Controls.Add(Me.RadioButton5)
+        Me.GroupBoxCurve.Controls.Add(Me.Button2)
+        Me.GroupBoxCurve.Controls.Add(Me.Label9)
+        Me.GroupBoxCurve.Controls.Add(Me.Label8)
+        Me.GroupBoxCurve.Controls.Add(Me.Label7)
+        Me.GroupBoxCurve.Controls.Add(Me.TextBox9)
+        Me.GroupBoxCurve.Controls.Add(Me.TextBox8)
+        Me.GroupBoxCurve.Controls.Add(Me.TextBox7)
+        Me.GroupBoxCurve.Controls.Add(Me.RadioButtonExp)
+        Me.GroupBoxCurve.Controls.Add(Me.RadioButtonLog)
         Me.GroupBoxCurve.Location = New System.Drawing.Point(29, 307)
         Me.GroupBoxCurve.Name = "GroupBoxCurve"
-        Me.GroupBoxCurve.Size = New System.Drawing.Size(99, 100)
+        Me.GroupBoxCurve.Size = New System.Drawing.Size(283, 97)
         Me.GroupBoxCurve.TabIndex = 7
         Me.GroupBoxCurve.TabStop = False
         Me.GroupBoxCurve.Text = "曲线参数"
         '
-        'DomainUpDown1
+        'RadioButtonExp
         '
-        Me.DomainUpDown1.Location = New System.Drawing.Point(7, 69)
-        Me.DomainUpDown1.Name = "DomainUpDown1"
-        Me.DomainUpDown1.Size = New System.Drawing.Size(79, 21)
-        Me.DomainUpDown1.TabIndex = 2
-        Me.DomainUpDown1.Text = "0"
+        Me.RadioButtonExp.AutoSize = True
+        Me.RadioButtonExp.Location = New System.Drawing.Point(7, 43)
+        Me.RadioButtonExp.Name = "RadioButtonExp"
+        Me.RadioButtonExp.Size = New System.Drawing.Size(47, 16)
+        Me.RadioButtonExp.TabIndex = 1
+        Me.RadioButtonExp.TabStop = True
+        Me.RadioButtonExp.Text = "指数"
+        Me.RadioButtonExp.UseVisualStyleBackColor = True
         '
-        'RadioButton6
+        'RadioButtonLog
         '
-        Me.RadioButton6.AutoSize = True
-        Me.RadioButton6.Location = New System.Drawing.Point(7, 44)
-        Me.RadioButton6.Name = "RadioButton6"
-        Me.RadioButton6.Size = New System.Drawing.Size(47, 16)
-        Me.RadioButton6.TabIndex = 1
-        Me.RadioButton6.TabStop = True
-        Me.RadioButton6.Text = "指数"
-        Me.RadioButton6.UseVisualStyleBackColor = True
-        '
-        'RadioButton5
-        '
-        Me.RadioButton5.AutoSize = True
-        Me.RadioButton5.Location = New System.Drawing.Point(7, 21)
-        Me.RadioButton5.Name = "RadioButton5"
-        Me.RadioButton5.Size = New System.Drawing.Size(47, 16)
-        Me.RadioButton5.TabIndex = 0
-        Me.RadioButton5.TabStop = True
-        Me.RadioButton5.Text = "对数"
-        Me.RadioButton5.UseVisualStyleBackColor = True
+        Me.RadioButtonLog.AutoSize = True
+        Me.RadioButtonLog.Location = New System.Drawing.Point(7, 21)
+        Me.RadioButtonLog.Name = "RadioButtonLog"
+        Me.RadioButtonLog.Size = New System.Drawing.Size(47, 16)
+        Me.RadioButtonLog.TabIndex = 0
+        Me.RadioButtonLog.TabStop = True
+        Me.RadioButtonLog.Text = "对数"
+        Me.RadioButtonLog.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -211,15 +216,15 @@ Partial Class FrmChangeGray
         '
         'TextBox5
         '
-        Me.TextBox5.Location = New System.Drawing.Point(195, 14)
+        Me.TextBox5.Location = New System.Drawing.Point(171, 16)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(33, 21)
         Me.TextBox5.TabIndex = 13
-        Me.TextBox5.Text = "0"
+        Me.TextBox5.Text = "255"
         '
         'TextBox6
         '
-        Me.TextBox6.Location = New System.Drawing.Point(195, 40)
+        Me.TextBox6.Location = New System.Drawing.Point(171, 40)
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Size = New System.Drawing.Size(33, 21)
         Me.TextBox6.TabIndex = 14
@@ -257,22 +262,22 @@ Partial Class FrmChangeGray
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(142, 19)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(47, 12)
+        Me.Label5.Size = New System.Drawing.Size(23, 12)
         Me.Label5.TabIndex = 18
-        Me.Label5.Text = "输出g0="
+        Me.Label5.Text = "Mf="
         '
         'Label6
         '
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(142, 43)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(47, 12)
+        Me.Label6.Size = New System.Drawing.Size(23, 12)
         Me.Label6.TabIndex = 19
-        Me.Label6.Text = "输出g1="
+        Me.Label6.Text = "Mg="
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(166, 321)
+        Me.Button1.Location = New System.Drawing.Point(207, 248)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(105, 46)
         Me.Button1.TabIndex = 20
@@ -281,6 +286,7 @@ Partial Class FrmChangeGray
         '
         'GroupBoxLinear
         '
+        Me.GroupBoxLinear.Controls.Add(Me.Button3)
         Me.GroupBoxLinear.Controls.Add(Me.TextBox1)
         Me.GroupBoxLinear.Controls.Add(Me.TextBox3)
         Me.GroupBoxLinear.Controls.Add(Me.Label6)
@@ -295,7 +301,7 @@ Partial Class FrmChangeGray
         Me.GroupBoxLinear.Controls.Add(Me.TextBox4)
         Me.GroupBoxLinear.Location = New System.Drawing.Point(29, 431)
         Me.GroupBoxLinear.Name = "GroupBoxLinear"
-        Me.GroupBoxLinear.Size = New System.Drawing.Size(242, 69)
+        Me.GroupBoxLinear.Size = New System.Drawing.Size(283, 75)
         Me.GroupBoxLinear.TabIndex = 21
         Me.GroupBoxLinear.TabStop = False
         '
@@ -307,6 +313,75 @@ Partial Class FrmChangeGray
         Me.LabelCursorPosition.Size = New System.Drawing.Size(23, 12)
         Me.LabelCursorPosition.TabIndex = 22
         Me.LabelCursorPosition.Text = "0,0"
+        '
+        'TextBox7
+        '
+        Me.TextBox7.Location = New System.Drawing.Point(103, 16)
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.Size = New System.Drawing.Size(33, 21)
+        Me.TextBox7.TabIndex = 2
+        Me.TextBox7.Text = "0.2"
+        '
+        'TextBox8
+        '
+        Me.TextBox8.Location = New System.Drawing.Point(103, 43)
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.Size = New System.Drawing.Size(33, 21)
+        Me.TextBox8.TabIndex = 3
+        Me.TextBox8.Text = "1.2"
+        '
+        'TextBox9
+        '
+        Me.TextBox9.Location = New System.Drawing.Point(103, 70)
+        Me.TextBox9.Name = "TextBox9"
+        Me.TextBox9.Size = New System.Drawing.Size(33, 21)
+        Me.TextBox9.TabIndex = 4
+        Me.TextBox9.Text = "0.2"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(80, 19)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(17, 12)
+        Me.Label7.TabIndex = 5
+        Me.Label7.Text = "a="
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(80, 47)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(17, 12)
+        Me.Label8.TabIndex = 6
+        Me.Label8.Text = "b="
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(80, 73)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(17, 12)
+        Me.Label9.TabIndex = 7
+        Me.Label9.Text = "c="
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(157, 56)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(65, 29)
+        Me.Button2.TabIndex = 8
+        Me.Button2.Text = "变换"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button3
+        '
+        Me.Button3.Location = New System.Drawing.Point(214, 26)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(54, 23)
+        Me.Button3.TabIndex = 20
+        Me.Button3.Text = "变换"
+        Me.Button3.UseVisualStyleBackColor = True
         '
         'FrmChangeGray
         '
@@ -324,6 +399,7 @@ Partial Class FrmChangeGray
         Me.Controls.Add(Me.FunctionCurve)
         Me.Controls.Add(Me.OriginHistPanel)
         Me.Controls.Add(Me.ChangedHistPanel)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "FrmChangeGray"
         Me.Text = "FrmChangeGray"
         CType(Me.ChangedHistPanel, System.ComponentModel.ISupportInitialize).EndInit()
@@ -346,9 +422,8 @@ Partial Class FrmChangeGray
     Friend WithEvents RadioButtonCurve As RadioButton
     Friend WithEvents RadioButtonLinear As RadioButton
     Friend WithEvents GroupBoxCurve As GroupBox
-    Friend WithEvents DomainUpDown1 As DomainUpDown
-    Friend WithEvents RadioButton6 As RadioButton
-    Friend WithEvents RadioButton5 As RadioButton
+    Friend WithEvents RadioButtonExp As RadioButton
+    Friend WithEvents RadioButtonLog As RadioButton
     Friend WithEvents Label1 As Label
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents TextBox2 As TextBox
@@ -364,4 +439,12 @@ Partial Class FrmChangeGray
     Friend WithEvents Button1 As Button
     Friend WithEvents GroupBoxLinear As GroupBox
     Friend WithEvents LabelCursorPosition As Label
+    Friend WithEvents Button2 As Button
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label7 As Label
+    Friend WithEvents TextBox9 As TextBox
+    Friend WithEvents TextBox8 As TextBox
+    Friend WithEvents TextBox7 As TextBox
+    Friend WithEvents Button3 As Button
 End Class
