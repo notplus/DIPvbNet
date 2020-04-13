@@ -1051,6 +1051,40 @@
             '触发数据改变事件
         End If
     End Sub
-
+    Private Sub SetRGBData(ByVal pos As Long, ByVal r As Byte, ByVal g As Byte, ByVal b As Byte)
+        ImageC(pos) = b
+        ImageC(pos + 1) = g
+        ImageC(pos + 2) = r
+    End Sub
+    Public Function ExchangeChannel(ByVal way As String) As Boolean
+        If mImageType = 1 Then
+            Dim pos As Long
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    pos = Cpos(i) + j * 3
+                    Dim r, g, b As Byte
+                    r = ImageC(pos + 2)
+                    g = ImageC(pos + 1)
+                    b = ImageC(pos)
+                    Select Case way
+                        Case "RGB"
+                            SetRGBData(pos, r, g, b)
+                        Case "RBG"
+                            SetRGBData(pos, r, b, g)
+                        Case "BRG"
+                            SetRGBData(pos, b, r, g)
+                        Case "BGR"
+                            SetRGBData(pos, b, g, r)
+                        Case "GBR"
+                            SetRGBData(pos, g, b, r)
+                        Case "GRB"
+                            SetRGBData(pos, g, r, b)
+                    End Select
+                Next
+            Next
+            putBitMapData()
+            Return True
+        End If
+    End Function
 
 End Class
