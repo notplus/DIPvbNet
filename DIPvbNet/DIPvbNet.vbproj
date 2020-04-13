@@ -82,6 +82,18 @@
     <Compile Include="FrmChangeGray.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmColorSplit.Designer.vb">
+      <DependentUpon>FrmColorSplit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmColorSplit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEditPalette.Designer.vb">
+      <DependentUpon>FrmEditPalette.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEditPalette.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmHistMatch.Designer.vb">
       <DependentUpon>FrmHistMatch.vb</DependentUpon>
     </Compile>
@@ -121,6 +133,12 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmChangeGray.resx">
       <DependentUpon>FrmChangeGray.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmColorSplit.resx">
+      <DependentUpon>FrmColorSplit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEditPalette.resx">
+      <DependentUpon>FrmEditPalette.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmHistMatch.resx">
       <DependentUpon>FrmHistMatch.vb</DependentUpon>

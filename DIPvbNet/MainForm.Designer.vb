@@ -46,6 +46,10 @@ Partial Class MainForm
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.直方图规定化ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.代数运算ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.彩色与调色板ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.彩色通道分解ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.编辑调色板ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -54,7 +58,7 @@ Partial Class MainForm
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.文件ToolStripMenuItem, Me.编辑ToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.文件ToolStripMenuItem, Me.编辑ToolStripMenuItem, Me.代数运算ToolStripMenuItem, Me.彩色与调色板ToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(766, 25)
@@ -208,6 +212,31 @@ Partial Class MainForm
         Me.直方图规定化ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.直方图规定化ToolStripMenuItem.Text = "直方图规定化"
         '
+        '代数运算ToolStripMenuItem
+        '
+        Me.代数运算ToolStripMenuItem.Name = "代数运算ToolStripMenuItem"
+        Me.代数运算ToolStripMenuItem.Size = New System.Drawing.Size(68, 21)
+        Me.代数运算ToolStripMenuItem.Text = "代数运算"
+        '
+        '彩色与调色板ToolStripMenuItem
+        '
+        Me.彩色与调色板ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.编辑调色板ToolStripMenuItem, Me.彩色通道分解ToolStripMenuItem})
+        Me.彩色与调色板ToolStripMenuItem.Name = "彩色与调色板ToolStripMenuItem"
+        Me.彩色与调色板ToolStripMenuItem.Size = New System.Drawing.Size(92, 21)
+        Me.彩色与调色板ToolStripMenuItem.Text = "彩色与调色板"
+        '
+        '彩色通道分解ToolStripMenuItem
+        '
+        Me.彩色通道分解ToolStripMenuItem.Name = "彩色通道分解ToolStripMenuItem"
+        Me.彩色通道分解ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.彩色通道分解ToolStripMenuItem.Text = "彩色通道分解"
+        '
+        '编辑调色板ToolStripMenuItem
+        '
+        Me.编辑调色板ToolStripMenuItem.Name = "编辑调色板ToolStripMenuItem"
+        Me.编辑调色板ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.编辑调色板ToolStripMenuItem.Text = "编辑调色板"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -254,4 +283,8 @@ Partial Class MainForm
     Friend WithEvents ToolStripOpen As ToolStripButton
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     Friend WithEvents 直方图规定化ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 代数运算ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 彩色与调色板ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 彩色通道分解ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 编辑调色板ToolStripMenuItem As ToolStripMenuItem
 End Class

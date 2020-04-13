@@ -201,6 +201,25 @@
         End If
     End Sub
 
+    Private Sub 彩色通道分解ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 彩色通道分解ToolStripMenuItem.Click
+        mImage.Calculate_Histogram()
+        If Not FrmColorSplit.Visible Then
+            FrmColorSplit.SetImageClass(mImage)
+            FrmColorSplit.Show(Me)
+        Else
+            FrmColorSplit.Refresh()
+        End If
+    End Sub
+
+    Private Sub 编辑调色板ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 编辑调色板ToolStripMenuItem.Click
+        If Not FrmEditPalette.Visible Then
+            FrmEditPalette.SetImageClass(mImage)
+            FrmEditPalette.Show(Me)
+        Else
+            FrmEditPalette.Refresh()
+        End If
+    End Sub
+
     Private Sub 左右翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 左右翻转ToolStripMenuItem.Click
         mImage.MirrorY()
         Panel.Refresh()
@@ -222,7 +241,7 @@
             End If
         End If
         ToolStripStatusLabel2.Text = "图像大小：" & mImage.Width & "*" & mImage.Height
-
+        ImageName = OpenFileDialog1.FileName
         Panel.Refresh()
 
         If HistogramForm.Visible Then

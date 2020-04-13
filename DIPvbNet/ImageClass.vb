@@ -1040,4 +1040,17 @@
     Public Function GetmPixels() As Long
         Return mPixels
     End Function
+
+    Public Function GetPalette() As Imaging.ColorPalette
+        Return mImg.Palette
+    End Function
+
+    Public Sub SetPalette(ByVal Pal As Imaging.ColorPalette)
+        If Not Pal Is Nothing Then
+            mImg.Palette = Pal
+            '触发数据改变事件
+        End If
+    End Sub
+
+
 End Class
