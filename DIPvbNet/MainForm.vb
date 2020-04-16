@@ -220,6 +220,10 @@
         End If
     End Sub
 
+    Private Sub 图像和ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 图像和ToolStripMenuItem.Click
+
+    End Sub
+
     Private Sub 左右翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 左右翻转ToolStripMenuItem.Click
         mImage.MirrorY()
         Panel.Refresh()

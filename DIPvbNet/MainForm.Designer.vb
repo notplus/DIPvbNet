@@ -50,6 +50,16 @@ Partial Class MainForm
         Me.彩色与调色板ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.彩色通道分解ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.编辑调色板ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.图像和ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.图像减ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.图像乘ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.图像除ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.条形图ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.钟形图ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.网格图ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.网格渐变图ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.圈圈图ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -214,6 +224,7 @@ Partial Class MainForm
         '
         '代数运算ToolStripMenuItem
         '
+        Me.代数运算ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.图像和ToolStripMenuItem, Me.图像减ToolStripMenuItem, Me.图像乘ToolStripMenuItem, Me.图像除ToolStripMenuItem, Me.ToolStripSeparator2, Me.条形图ToolStripMenuItem, Me.钟形图ToolStripMenuItem, Me.网格图ToolStripMenuItem, Me.网格渐变图ToolStripMenuItem, Me.圈圈图ToolStripMenuItem})
         Me.代数运算ToolStripMenuItem.Name = "代数运算ToolStripMenuItem"
         Me.代数运算ToolStripMenuItem.Size = New System.Drawing.Size(68, 21)
         Me.代数运算ToolStripMenuItem.Text = "代数运算"
@@ -236,6 +247,65 @@ Partial Class MainForm
         Me.编辑调色板ToolStripMenuItem.Name = "编辑调色板ToolStripMenuItem"
         Me.编辑调色板ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.编辑调色板ToolStripMenuItem.Text = "编辑调色板"
+        '
+        '图像和ToolStripMenuItem
+        '
+        Me.图像和ToolStripMenuItem.Name = "图像和ToolStripMenuItem"
+        Me.图像和ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像和ToolStripMenuItem.Text = "图像和"
+        '
+        '图像减ToolStripMenuItem
+        '
+        Me.图像减ToolStripMenuItem.Name = "图像减ToolStripMenuItem"
+        Me.图像减ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像减ToolStripMenuItem.Text = "图像减"
+        '
+        '图像乘ToolStripMenuItem
+        '
+        Me.图像乘ToolStripMenuItem.Name = "图像乘ToolStripMenuItem"
+        Me.图像乘ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像乘ToolStripMenuItem.Text = "图像乘"
+        '
+        '图像除ToolStripMenuItem
+        '
+        Me.图像除ToolStripMenuItem.Name = "图像除ToolStripMenuItem"
+        Me.图像除ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像除ToolStripMenuItem.Text = "图像除"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(177, 6)
+        '
+        '条形图ToolStripMenuItem
+        '
+        Me.条形图ToolStripMenuItem.Name = "条形图ToolStripMenuItem"
+        Me.条形图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.条形图ToolStripMenuItem.Text = "条形图"
+        '
+        '钟形图ToolStripMenuItem
+        '
+        Me.钟形图ToolStripMenuItem.Name = "钟形图ToolStripMenuItem"
+        Me.钟形图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.钟形图ToolStripMenuItem.Text = "钟形图"
+        '
+        '网格图ToolStripMenuItem
+        '
+        Me.网格图ToolStripMenuItem.Name = "网格图ToolStripMenuItem"
+        Me.网格图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.网格图ToolStripMenuItem.Text = "网格图"
+        '
+        '网格渐变图ToolStripMenuItem
+        '
+        Me.网格渐变图ToolStripMenuItem.Name = "网格渐变图ToolStripMenuItem"
+        Me.网格渐变图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.网格渐变图ToolStripMenuItem.Text = "网格渐变图"
+        '
+        '圈圈图ToolStripMenuItem
+        '
+        Me.圈圈图ToolStripMenuItem.Name = "圈圈图ToolStripMenuItem"
+        Me.圈圈图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.圈圈图ToolStripMenuItem.Text = "16*16圈圈图"
         '
         'MainForm
         '
@@ -287,4 +357,14 @@ Partial Class MainForm
     Friend WithEvents 彩色与调色板ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 彩色通道分解ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 编辑调色板ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 图像和ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 图像减ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 图像乘ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 图像除ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents 条形图ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 钟形图ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 网格图ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 网格渐变图ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 圈圈图ToolStripMenuItem As ToolStripMenuItem
 End Class

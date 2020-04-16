@@ -1087,4 +1087,40 @@
         End If
     End Function
 
+    Public Function GetGray(ByVal i As Integer, ByVal j As Integer) As Byte
+        Dim ret As Byte
+        If mImageType = 0 Then
+            If j < 0 Or j >= mWidth Or i < 0 Or i >= mHeight Then
+                ret = 0
+            Else
+                ret = ImageB(i * mFwidth + j)
+            End If
+        Else
+            ret = 0
+        End If
+        Return ret
+    End Function
+
+    Public Function AlgebrOper(ByVal imgB As ImageClass, ByVal op As Integer) As Boolean
+        If imgB.GetImageType <> mImageType Then
+            Return False
+        End If
+        If mImageType = 1 Then
+            Return False
+        End If
+        Dim jStart, jEnd, iStart, iEnd As Integer
+        Dim bjStart, bjEnd, biStart, biEnd As Integer
+        If mWidth > imgB.Width() Then
+            jStart = (mWidth - imgB.Width()) / 2
+            jEnd = jStart + imgB.Width() - 1
+            If mHeight > imgB.Height() Then
+                iStart = (mHeight - imgB.Height()) / 2
+
+            End If
+
+
+        End If
+
+
+    End Function
 End Class
