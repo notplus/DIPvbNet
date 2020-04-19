@@ -804,7 +804,8 @@
         If ImageType() <> 0 Then Return 0
         If j < 0 Or i < 0 Then Return 0
         If (j > mHeight - 1) Or (i > mWidth - 1) Then Return 0
-        pos = j * mFwidth + i
+        'pos = j * mFwidth + i
+        pos = i * mFwidth + j
         Return ImageB(pos)
     End Function
 
@@ -1087,19 +1088,19 @@
         End If
     End Function
 
-    Public Function GetGray(ByVal i As Integer, ByVal j As Integer) As Byte
-        Dim ret As Byte
-        If mImageType = 0 Then
-            If j < 0 Or j >= mWidth Or i < 0 Or i >= mHeight Then
-                ret = 0
-            Else
-                ret = ImageB(i * mFwidth + j)
-            End If
-        Else
-            ret = 0
-        End If
-        Return ret
-    End Function
+    'Public Function GetGray(ByVal i As Integer, ByVal j As Integer) As Byte
+    '    Dim ret As Byte
+    '    If mImageType = 0 Then
+    '        If j < 0 Or j >= mWidth Or i < 0 Or i >= mHeight Then
+    '            ret = 0
+    '        Else
+    '            ret = ImageB(i * mFwidth + j)
+    '        End If
+    '    Else
+    '        ret = 0
+    '    End If
+    '    Return ret
+    'End Function
 
     Public Function AlgebrOper(ByVal imgB As ImageClass, ByVal op As Integer) As Boolean
         If imgB.GetImageType <> mImageType Then
@@ -1113,14 +1114,117 @@
         If mWidth > imgB.Width() Then
             jStart = (mWidth - imgB.Width()) / 2
             jEnd = jStart + imgB.Width() - 1
+            bjStart = 0
+            bjEnd = imgB.Width() - 1
             If mHeight > imgB.Height() Then
                 iStart = (mHeight - imgB.Height()) / 2
-
+                iEnd = iStart + imgB.Height() - 1
+                biStart = 0
+                biEnd = imgB.Height() - 1
+            Else
+                iStart = 0
+                iEnd = mHeight - 1
+                biStart = (imgB.Height() - mHeight) / 2
+                biEnd = biStart + mHeight - 1
             End If
-
-
+        Else
+            jStart = 0
+            jEnd = mWidth - 1
+            bjStart = (imgB.Width() - mWidth) / 2
+            bjEnd = bjStart + mWidth - 1
+            If mHeight > imgB.Height() Then
+                iStart = (mHeight - imgB.Height()) / 2
+                iEnd = iStart + mHeight - 1
+                biStart = 0
+                biEnd = imgB.Height() - 1
+            Else
+                iStart = 0
+                iEnd = mHeight - 1
+                biStart = (imgB.Width() - mWidth) / 2
+                bjEnd = bjStart + mWidth - 1
+            End If
         End If
 
+        Dim tempDoubleArray(mSize - 1) As Double
+        Array.Copy(ImageB, tempDoubleArray, mSize - 1)
+
+        Dim pos As Long
+        Select Case op
+            Case 0
+                For i = iStart To iEnd
+                    For j = jStart To jEnd
+                        pos = i * mFwidth + j
+                        'ImageB(pos) = NormValue(CDbl(ImageB(pos)) + imgB.getGrey(biStart + i, bjStart + j))
+                        tempDoubleArray(pos) = CDbl(ImageB(pos)) + imgB.getGrey(biStart + i, bjStart + j)
+                    Next
+                Next
+            Case 1
+                For i = iStart To iEnd
+                    For j = jStart To jEnd
+                        pos = i * mFwidth + j
+                        'ImageB(pos) = NormValue(CDbl(ImageB(pos)) - imgB.getGrey(biStart + i, bjStart + j))
+                        tempDoubleArray(pos) = CDbl(ImageB(pos)) - imgB.getGrey(biStart + i, bjStart + j)
+                    Next
+                Next
+            Case 2
+                For i = iStart To iEnd
+                    For j = jStart To jEnd
+                        pos = i * mFwidth + j
+                        'ImageB(pos) = NormValue(CDbl(ImageB(pos)) * imgB.getGrey(biStart + i, bjStart + j))
+                        tempDoubleArray(pos) = CDbl(ImageB(pos)) * imgB.getGrey(biStart + i, bjStart + j)
+                    Next
+                Next
+            Case 3
+                For i = iStart To iEnd
+                    For j = jStart To jEnd
+                        If imgB.getGrey(biStart + i, bjStart + j) <> 0 Then
+                            pos = i * mFwidth + j
+                            'ImageB(pos) = NormValue(CDbl(ImageB(pos)) / imgB.getGrey(biStart + i, bjStart + j))
+                            tempDoubleArray(pos) = CDbl(ImageB(pos)) / imgB.getGrey(biStart + i, bjStart + j)
+                        Else
+                            'ImageB(pos) = 255
+                            tempDoubleArray(pos) = 9999
+                        End If
+                    Next
+                Next
+        End Select
+
+        NormArray2ImageB(tempDoubleArray)
+        putBitMapData()
+    End Function
+    Public Function NormValue(ByVal num As Double) As Byte
+        If num > 255 Then
+            Return CByte(255)
+        ElseIf num < 0 Then
+            Return CByte(0)
+        Else
+            Return CByte(num)
+        End If
+    End Function
+
+    Public Function NormArray2ImageB(ByRef arr() As Double) As Boolean
+        Dim gmax, gmin As Double
+        Dim pos As Long
+        gmax = arr(0)
+        gmin = arr(0)
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                pos = i * mFwidth + j
+                If arr(pos) > gmax Then
+                    gmax = arr(pos)
+                End If
+                If arr(pos) < gmin Then
+                    gmin = arr(pos)
+                End If
+            Next
+        Next
+
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                pos = i * mFwidth + j
+                ImageB(pos) = CByte((arr(pos) - gmin) / (gmax - gmin) * 255)
+            Next
+        Next
 
     End Function
 End Class

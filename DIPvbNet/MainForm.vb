@@ -221,7 +221,19 @@
     End Sub
 
     Private Sub 图像和ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 图像和ToolStripMenuItem.Click
+        ImgAlgebrOper(0)
+    End Sub
 
+    Private Sub 图像减ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 图像减ToolStripMenuItem.Click
+        ImgAlgebrOper(1)
+    End Sub
+
+    Private Sub 图像乘ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 图像乘ToolStripMenuItem.Click
+        ImgAlgebrOper(2)
+    End Sub
+
+    Private Sub 图像除ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 图像除ToolStripMenuItem.Click
+        ImgAlgebrOper(3)
     End Sub
 
     Private Sub 左右翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 左右翻转ToolStripMenuItem.Click
@@ -282,5 +294,18 @@
 
     Public Function ChangeImageClass(ByRef newImageClass As ImageClass) As Boolean
         mImage = newImageClass
+    End Function
+
+    Public Function ImgAlgebrOper(ByVal op As Integer) As Boolean
+        Dim imgB As New ImageClass
+        OpenFileDialog1.ShowDialog()
+        If OpenFileDialog1.FileName = "" Or Dir(OpenFileDialog1.FileName) = "" Then
+            Return False
+        Else
+            imgB.ReadImage(OpenFileDialog1.FileName)
+        End If
+
+        mImage.AlgebrOper(imgB, op)
+        Panel.Refresh()
     End Function
 End Class
