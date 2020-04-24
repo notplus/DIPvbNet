@@ -60,6 +60,11 @@ Partial Class MainForm
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
+        Me.加椒盐ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.中值过滤ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.均值过滤ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.卷积过滤ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.梯度滤波ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,7 +95,7 @@ Partial Class MainForm
         '
         '编辑ToolStripMenuItem
         '
-        Me.编辑ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.负片ToolStripMenuItem, Me.上下翻转ToolStripMenuItem, Me.中心镜像ToolStripMenuItem, Me.左右翻转ToolStripMenuItem, Me.mnu灰度直方图, Me.灰度图像二值化ToolStripMenuItem, Me.图像二值化ToolStripMenuItem, Me.灰度变换ToolStripMenuItem, Me.直方图规定化ToolStripMenuItem})
+        Me.编辑ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.负片ToolStripMenuItem, Me.上下翻转ToolStripMenuItem, Me.中心镜像ToolStripMenuItem, Me.左右翻转ToolStripMenuItem, Me.mnu灰度直方图, Me.灰度图像二值化ToolStripMenuItem, Me.图像二值化ToolStripMenuItem, Me.灰度变换ToolStripMenuItem, Me.直方图规定化ToolStripMenuItem, Me.加椒盐ToolStripMenuItem, Me.中值过滤ToolStripMenuItem, Me.均值过滤ToolStripMenuItem, Me.卷积过滤ToolStripMenuItem, Me.梯度滤波ToolStripMenuItem})
         Me.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem"
         Me.编辑ToolStripMenuItem.Size = New System.Drawing.Size(44, 21)
         Me.编辑ToolStripMenuItem.Text = "编辑"
@@ -98,55 +103,55 @@ Partial Class MainForm
         '负片ToolStripMenuItem
         '
         Me.负片ToolStripMenuItem.Name = "负片ToolStripMenuItem"
-        Me.负片ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.负片ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.负片ToolStripMenuItem.Text = "负片"
         '
         '上下翻转ToolStripMenuItem
         '
         Me.上下翻转ToolStripMenuItem.Name = "上下翻转ToolStripMenuItem"
-        Me.上下翻转ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.上下翻转ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.上下翻转ToolStripMenuItem.Text = "上下翻转"
         '
         '中心镜像ToolStripMenuItem
         '
         Me.中心镜像ToolStripMenuItem.Name = "中心镜像ToolStripMenuItem"
-        Me.中心镜像ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.中心镜像ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.中心镜像ToolStripMenuItem.Text = "中心镜像"
         '
         '左右翻转ToolStripMenuItem
         '
         Me.左右翻转ToolStripMenuItem.Name = "左右翻转ToolStripMenuItem"
-        Me.左右翻转ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.左右翻转ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.左右翻转ToolStripMenuItem.Text = "左右翻转"
         '
         'mnu灰度直方图
         '
         Me.mnu灰度直方图.Name = "mnu灰度直方图"
-        Me.mnu灰度直方图.Size = New System.Drawing.Size(160, 22)
+        Me.mnu灰度直方图.Size = New System.Drawing.Size(180, 22)
         Me.mnu灰度直方图.Text = "灰度直方图"
         '
         '灰度图像二值化ToolStripMenuItem
         '
         Me.灰度图像二值化ToolStripMenuItem.Name = "灰度图像二值化ToolStripMenuItem"
-        Me.灰度图像二值化ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.灰度图像二值化ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.灰度图像二值化ToolStripMenuItem.Text = "灰度图像二值化"
         '
         '图像二值化ToolStripMenuItem
         '
         Me.图像二值化ToolStripMenuItem.Name = "图像二值化ToolStripMenuItem"
-        Me.图像二值化ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.图像二值化ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.图像二值化ToolStripMenuItem.Text = "图像二值化"
         '
         '灰度变换ToolStripMenuItem
         '
         Me.灰度变换ToolStripMenuItem.Name = "灰度变换ToolStripMenuItem"
-        Me.灰度变换ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.灰度变换ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.灰度变换ToolStripMenuItem.Text = "灰度变换"
         '
         '直方图规定化ToolStripMenuItem
         '
         Me.直方图规定化ToolStripMenuItem.Name = "直方图规定化ToolStripMenuItem"
-        Me.直方图规定化ToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.直方图规定化ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.直方图规定化ToolStripMenuItem.Text = "直方图规定化"
         '
         '代数运算ToolStripMenuItem
@@ -159,60 +164,60 @@ Partial Class MainForm
         '图像和ToolStripMenuItem
         '
         Me.图像和ToolStripMenuItem.Name = "图像和ToolStripMenuItem"
-        Me.图像和ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像和ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.图像和ToolStripMenuItem.Text = "图像和"
         '
         '图像减ToolStripMenuItem
         '
         Me.图像减ToolStripMenuItem.Name = "图像减ToolStripMenuItem"
-        Me.图像减ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像减ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.图像减ToolStripMenuItem.Text = "图像减"
         '
         '图像乘ToolStripMenuItem
         '
         Me.图像乘ToolStripMenuItem.Name = "图像乘ToolStripMenuItem"
-        Me.图像乘ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像乘ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.图像乘ToolStripMenuItem.Text = "图像乘"
         '
         '图像除ToolStripMenuItem
         '
         Me.图像除ToolStripMenuItem.Name = "图像除ToolStripMenuItem"
-        Me.图像除ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.图像除ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.图像除ToolStripMenuItem.Text = "图像除"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(177, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(142, 6)
         '
         '条形图ToolStripMenuItem
         '
         Me.条形图ToolStripMenuItem.Name = "条形图ToolStripMenuItem"
-        Me.条形图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.条形图ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.条形图ToolStripMenuItem.Text = "条形图"
         '
         '钟形图ToolStripMenuItem
         '
         Me.钟形图ToolStripMenuItem.Name = "钟形图ToolStripMenuItem"
-        Me.钟形图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.钟形图ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.钟形图ToolStripMenuItem.Text = "钟形图"
         '
         '网格图ToolStripMenuItem
         '
         Me.网格图ToolStripMenuItem.Name = "网格图ToolStripMenuItem"
-        Me.网格图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.网格图ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.网格图ToolStripMenuItem.Text = "网格图"
         '
         '网格渐变图ToolStripMenuItem
         '
         Me.网格渐变图ToolStripMenuItem.Name = "网格渐变图ToolStripMenuItem"
-        Me.网格渐变图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.网格渐变图ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.网格渐变图ToolStripMenuItem.Text = "网格渐变图"
         '
         '圈圈图ToolStripMenuItem
         '
         Me.圈圈图ToolStripMenuItem.Name = "圈圈图ToolStripMenuItem"
-        Me.圈圈图ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.圈圈图ToolStripMenuItem.Size = New System.Drawing.Size(145, 22)
         Me.圈圈图ToolStripMenuItem.Text = "16*16圈圈图"
         '
         '彩色与调色板ToolStripMenuItem
@@ -307,6 +312,36 @@ Partial Class MainForm
         Me.ToolStripButton1.Size = New System.Drawing.Size(60, 22)
         Me.ToolStripButton1.Text = "重读图像"
         '
+        '加椒盐ToolStripMenuItem
+        '
+        Me.加椒盐ToolStripMenuItem.Name = "加椒盐ToolStripMenuItem"
+        Me.加椒盐ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.加椒盐ToolStripMenuItem.Text = "加椒盐"
+        '
+        '中值过滤ToolStripMenuItem
+        '
+        Me.中值过滤ToolStripMenuItem.Name = "中值过滤ToolStripMenuItem"
+        Me.中值过滤ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.中值过滤ToolStripMenuItem.Text = "中值过滤"
+        '
+        '均值过滤ToolStripMenuItem
+        '
+        Me.均值过滤ToolStripMenuItem.Name = "均值过滤ToolStripMenuItem"
+        Me.均值过滤ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.均值过滤ToolStripMenuItem.Text = "均值过滤"
+        '
+        '卷积过滤ToolStripMenuItem
+        '
+        Me.卷积过滤ToolStripMenuItem.Name = "卷积过滤ToolStripMenuItem"
+        Me.卷积过滤ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.卷积过滤ToolStripMenuItem.Text = "卷积过滤"
+        '
+        '梯度滤波ToolStripMenuItem
+        '
+        Me.梯度滤波ToolStripMenuItem.Name = "梯度滤波ToolStripMenuItem"
+        Me.梯度滤波ToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.梯度滤波ToolStripMenuItem.Text = "梯度滤波"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -367,4 +402,9 @@ Partial Class MainForm
     Friend WithEvents 网格图ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 网格渐变图ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 圈圈图ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 加椒盐ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 中值过滤ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 均值过滤ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 卷积过滤ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 梯度滤波ToolStripMenuItem As ToolStripMenuItem
 End Class

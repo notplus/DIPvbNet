@@ -115,7 +115,8 @@
         isZoom = False
         RubberColor = Color.Cyan
         NeedZoomOut = True
-        ImageName = Application.StartupPath & "\lena.bmp"
+        ImageName = System.IO.Directory.GetParent(System.IO.Directory.GetParent(Application.StartupPath).FullName).FullName & "\lena.bmp"
+        'ImageName = Application.StartupPath & "\lena.bmp"
         If Dir(ImageName) = "" Then Exit Sub
         'If mImage Is Nothing Then mImage = New ImageClass
         mImage.ReadImage(ImageName)
@@ -147,7 +148,14 @@
     End Sub
 
     Private Sub 图像二值化ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 图像二值化ToolStripMenuItem.Click
-        mImage.Image2BlackWhite(150)
+        Dim threshold As Byte
+        Dim input_string As String = InputBox("输入二值化阈值", "提示")
+        If input_string.Length = 0 Then
+            Exit Sub
+        Else
+            threshold = CByte(Int(input_string))
+        End If
+        mImage.Image2BlackWhite(threshold)
         Panel.Refresh()
         If HistogramForm.Visible Then
             mImage.Calculate_Histogram()
@@ -241,20 +249,76 @@
         Panel.Refresh()
     End Sub
 
+    Private Sub 条形图ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 条形图ToolStripMenuItem.Click
+        'Dim newImage As New ImageClass
+        mImage.CreateImage(512, 512, 0)
+        'ChangeImageClass(newImage)
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 钟形图ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 钟形图ToolStripMenuItem.Click
+        mImage.CreateImage(512, 512, 1)
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 网格图ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 网格图ToolStripMenuItem.Click
+        mImage.CreateImage(512, 512, 2)
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 网格渐变图ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 网格渐变图ToolStripMenuItem.Click
+        mImage.CreateImage(512, 512, 3)
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 圈圈图ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 圈圈图ToolStripMenuItem.Click
+        mImage.CreateImage(256, 256, 4)
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 加椒盐ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 加椒盐ToolStripMenuItem.Click
+        mImage.AddSaltNoise()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 中值过滤ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 中值过滤ToolStripMenuItem.Click
+        mImage.MedianFilter()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 均值过滤ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 均值过滤ToolStripMenuItem.Click
+        mImage.MeanFilter()
+        DataChange()
+    End Sub
+
     Private Sub ToolStripOpen_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripOpen.Click
         Call OpenImage()
     End Sub
 
-    Private Sub OpenImage()
-        If mImage Is Nothing Or Not mImage.isEmpty Then
-            mImage.ReadImage(Application.StartupPath & "\lena.bmp")
+    Private Sub 卷积过滤ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 卷积过滤ToolStripMenuItem.Click
+        If Not FrmConvFilter.Visible Then
+            FrmConvFilter.m_Image = mImage
+            FrmConvFilter.Show(Me)
         Else
-            OpenFileDialog1.ShowDialog()
-            If OpenFileDialog1.FileName = "" Or Dir(OpenFileDialog1.FileName) = "" Then
-                Return
-            Else
-                mImage.ReadImage(OpenFileDialog1.FileName)
-            End If
+            FrmConvFilter.Refresh()
+        End If
+    End Sub
+
+    Private Sub 梯度滤波ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 梯度滤波ToolStripMenuItem.Click
+        If Not FrmGradientFilter.Visible Then
+            FrmGradientFilter.m_Image = mImage
+            FrmGradientFilter.Show(Me)
+        Else
+            FrmGradientFilter.Refresh()
+        End If
+    End Sub
+
+    Private Sub OpenImage()
+        OpenFileDialog1.ShowDialog()
+        If OpenFileDialog1.FileName = "" Or Dir(OpenFileDialog1.FileName) = "" Then
+            Return
+        Else
+            mImage.ReadImage(OpenFileDialog1.FileName)
         End If
         ToolStripStatusLabel2.Text = "图像大小：" & mImage.Width & "*" & mImage.Height
         ImageName = OpenFileDialog1.FileName
@@ -287,6 +351,13 @@
             HistogramForm.Refresh()
         End If
     End Sub
+    Public Function DataChange() As Boolean
+        Panel.Refresh()
+        If HistogramForm.Visible Then
+            mImage.Calculate_Histogram()
+            HistogramForm.Refresh()
+        End If
+    End Function
 
     Private Sub MainForm_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
         'mImage.Display(Panel.CreateGraphics, mImage.Width, mImage.Height)

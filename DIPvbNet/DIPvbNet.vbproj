@@ -88,10 +88,22 @@
     <Compile Include="FrmColorSplit.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmConvFilter.Designer.vb">
+      <DependentUpon>FrmConvFilter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmConvFilter.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmEditPalette.Designer.vb">
       <DependentUpon>FrmEditPalette.vb</DependentUpon>
     </Compile>
     <Compile Include="FrmEditPalette.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGradientFilter.Designer.vb">
+      <DependentUpon>FrmGradientFilter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGradientFilter.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmHistMatch.Designer.vb">
@@ -137,8 +149,14 @@
     <EmbeddedResource Include="FrmColorSplit.resx">
       <DependentUpon>FrmColorSplit.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmConvFilter.resx">
+      <DependentUpon>FrmConvFilter.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmEditPalette.resx">
       <DependentUpon>FrmEditPalette.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGradientFilter.resx">
+      <DependentUpon>FrmGradientFilter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmHistMatch.resx">
       <DependentUpon>FrmHistMatch.vb</DependentUpon>
@@ -167,6 +185,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grad.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

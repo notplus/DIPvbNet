@@ -803,10 +803,27 @@
         Dim pos As Long
         If ImageType() <> 0 Then Return 0
         If j < 0 Or i < 0 Then Return 0
-        If (j > mHeight - 1) Or (i > mWidth - 1) Then Return 0
+        If (j > mWidth - 1) Or (i > mHeight - 1) Then Return 0
         'pos = j * mFwidth + i
         pos = i * mFwidth + j
         Return ImageB(pos)
+    End Function
+    Public Function GetRGB(i As Integer, j As Integer, channel As Char) As Byte
+        Dim pos As Long
+        If ImageType() <> 1 Then Return 0
+        If j < 0 Or i < 0 Then Return 0
+        If (j > mWidth - 1) Or (i > mHeight - 1) Then Return 0
+        'pos = j * mFwidth + i
+        pos = Cpos(i) + j * 3
+        Select Case channel
+            Case "r"
+                pos += 2
+            Case "g"
+                pos += 1
+            Case "b"
+                pos += 0
+        End Select
+        Return ImageC(pos)
     End Function
 
     Public Property xWinMin() As Double
@@ -1049,7 +1066,6 @@
     Public Sub SetPalette(ByVal Pal As Imaging.ColorPalette)
         If Not Pal Is Nothing Then
             mImg.Palette = Pal
-            '触发数据改变事件
         End If
     End Sub
     Private Sub SetRGBData(ByVal pos As Long, ByVal r As Byte, ByVal g As Byte, ByVal b As Byte)
@@ -1110,42 +1126,36 @@
             Return False
         End If
         Dim jStart, jEnd, iStart, iEnd As Integer
-        Dim bjStart, bjEnd, biStart, biEnd As Integer
+        Dim bjStart, biStart As Integer
         If mWidth > imgB.Width() Then
             jStart = (mWidth - imgB.Width()) / 2
             jEnd = jStart + imgB.Width() - 1
             bjStart = 0
-            bjEnd = imgB.Width() - 1
             If mHeight > imgB.Height() Then
                 iStart = (mHeight - imgB.Height()) / 2
                 iEnd = iStart + imgB.Height() - 1
                 biStart = 0
-                biEnd = imgB.Height() - 1
             Else
                 iStart = 0
                 iEnd = mHeight - 1
                 biStart = (imgB.Height() - mHeight) / 2
-                biEnd = biStart + mHeight - 1
             End If
         Else
             jStart = 0
             jEnd = mWidth - 1
             bjStart = (imgB.Width() - mWidth) / 2
-            bjEnd = bjStart + mWidth - 1
             If mHeight > imgB.Height() Then
                 iStart = (mHeight - imgB.Height()) / 2
                 iEnd = iStart + mHeight - 1
                 biStart = 0
-                biEnd = imgB.Height() - 1
             Else
                 iStart = 0
                 iEnd = mHeight - 1
                 biStart = (imgB.Width() - mWidth) / 2
-                bjEnd = bjStart + mWidth - 1
             End If
         End If
 
-        Dim tempDoubleArray(mSize - 1) As Double
+        Dim tempDoubleArray(mSize - 1) As Single
         Array.Copy(ImageB, tempDoubleArray, mSize - 1)
 
         Dim pos As Long
@@ -1192,7 +1202,7 @@
         NormArray2ImageB(tempDoubleArray)
         putBitMapData()
     End Function
-    Public Function NormValue(ByVal num As Double) As Byte
+    Public Function NormValue(ByVal num As Single) As Byte
         If num > 255 Then
             Return CByte(255)
         ElseIf num < 0 Then
@@ -1201,8 +1211,28 @@
             Return CByte(num)
         End If
     End Function
+    Public Function CutoffArray2ImageB(ByVal arr() As Single) As Boolean '将传入的数组元素小于0=0，大于255=255，并赋给ImageB
+        Dim pos As Long
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                pos = i * mFwidth + j
+                ImageB(pos) = NormValue(arr(pos))
+            Next
+        Next
+    End Function
+    Public Function CutoffArray2ImageC(ByVal arr() As Single) As Boolean '将传入的数组元素小于0=0，大于255=255，并赋给ImageC
+        Dim pos As Long
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                pos = Cpos(i) + j * 3
+                ImageC(pos) = NormValue(arr(pos))
+                ImageC(pos + 1) = NormValue(arr(pos + 1))
+                ImageC(pos + 2) = NormValue(arr(pos + 2))
+            Next
+        Next
+    End Function
 
-    Public Function NormArray2ImageB(ByRef arr() As Double) As Boolean
+    Public Function NormArray2ImageB(ByRef arr() As Single) As Boolean '将传入的数组规范到0-255，并赋给ImageB
         Dim gmax, gmin As Double
         Dim pos As Long
         gmax = arr(0)
@@ -1225,6 +1255,484 @@
                 ImageB(pos) = CByte((arr(pos) - gmin) / (gmax - gmin) * 255)
             Next
         Next
+    End Function
+    Public Function NormArray2ImageC(ByRef arr() As Single) As Boolean '将传入的数组规范到0-255，并赋给ImageC
+        Dim rgmax, rgmin As Double
+        Dim ggmax, ggmin As Double
+        Dim bgmax, bgmin As Double
+        Dim pos As Long
+        rgmax = arr(0)
+        rgmin = arr(0)
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                pos = Cpos(i) + j * 3
+                If arr(pos + 2) > rgmax Then
+                    rgmax = arr(pos + 2)
+                End If
+                If arr(pos + 2) < rgmin Then
+                    rgmin = arr(pos + 2)
+                End If
+                If arr(pos + 1) > ggmax Then
+                    ggmax = arr(pos + 1)
+                End If
+                If arr(pos + 1) < ggmin Then
+                    ggmin = arr(pos + 1)
+                End If
+                If arr(pos) > bgmax Then
+                    bgmax = arr(pos)
+                End If
+                If arr(pos) < bgmin Then
+                    bgmin = arr(pos)
+                End If
+            Next
+        Next
+
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                pos = Cpos(i) + j * 3
+                ImageC(pos + 2) = CByte((arr(pos + 2) - rgmin) / (rgmax - rgmin) * 255)
+                ImageC(pos + 1) = CByte((arr(pos + 1) - ggmin) / (ggmax - ggmin) * 255)
+                ImageC(pos) = CByte((arr(pos) - bgmin) / (bgmax - bgmin) * 255)
+            Next
+        Next
+    End Function
+    Public Function CreateImage(ByVal cols As Integer, ByVal rows As Integer, ByVal op As Integer) As Boolean
+        mImg = New Bitmap(cols, rows, Drawing.Imaging.PixelFormat.Format8bppIndexed)
+        getBitMapData()
+
+        Select Case op
+            Case 0 '条形图
+                Dim num As Integer = CInt(Math.Round(CDbl(mHeight) / 10.0))
+                For i As Integer = 0 To mHeight - 1
+                    Dim g As Single = CSng((Math.Sin(CDbl((CSng(i) / CSng(num))) * 6.28) + 1.2) / 2.4 * 255.0)
+                    For j As Integer = 0 To mHeight - 1
+                        Dim pos As Long = i * mFwidth + j
+                        ImageB(pos) = CByte(g)
+                    Next
+                Next
+            Case 1
+                Dim num6 As Double = Math.Pow(CDbl(Me.mHeight) / 2.0, 2.0) + Math.Pow(CDbl(Me.mWidth) / 2.0, 2.0) / 10.0
+                Dim num As Integer = CInt(Math.Round(CDbl(Me.mHeight) / 2.0))
+                Dim num7 As Integer = CInt(Math.Round(CDbl(Me.mWidth) / 2.0))
+                For i As Integer = 0 To mHeight - 1
+                    For j As Integer = 0 To mWidth - 1
+                        Dim num10 As Single
+                        Dim num3 As Single = CSng((Math.Pow(CDbl((i - num)), 2.0) + Math.Pow(CDbl((j - num7)), 2.0)))
+                        num10 = CSng((Math.Exp(CDbl((-CDbl(num3))) / num6) * 255.0))
+                        Dim pos As Long = i * mFwidth + j
+
+                        ImageB(pos) = CByte(num10)
+                    Next
+                Next
+            Case 2
+                Dim num11 As Integer = Me.mHeight - 1
+                For i As Integer = 0 To num11
+                    Dim num As Integer = CInt(Math.Round(CDbl(i) / 20.0))
+                    Dim num12 As Integer = Me.mWidth - 1
+                    For j As Integer = 0 To num12
+                        Dim num7 As Integer = CInt(Math.Round(CDbl(j) / 20.0))
+                        Dim num5 As Long = CLng((i * Me.mFwidth + j))
+                        Dim flag9 As Boolean = (num7 And 1 And (num And 1)) <> 0
+                        If flag9 Then
+                            Me.ImageB(CInt(num5)) = 0
+                        Else
+                            Me.ImageB(CInt(num5)) = Byte.MaxValue
+                        End If
+                    Next
+                Next
+            Case 3
+                Dim num15 As Single = CSng((CDbl(Me.mWidth) / 5.0))
+                Dim num16 As Integer = Me.mHeight - 1
+                For i As Integer = 0 To num16
+                    Dim num17 As Integer = Me.mWidth - 1
+                    For j As Integer = 0 To num17
+                        Dim num3 As Single
+                        Dim num5 As Long
+                        Dim flag10 As Boolean
+
+                        num3 = CSng(((Math.Sin(CDbl((CSng(i) / num15)) * 6.28) * Math.Sin(CDbl((CSng(j) / num15)) * 6.28) + 1.0) / 2.0 * 255.0))
+                        num5 = CLng((i * Me.mFwidth + j))
+                        flag10 = (CDbl(num3) < 0.0)
+
+                        If flag10 Then
+                            Me.ImageB(CInt(num5)) = 0
+                        Else
+                            Dim flag11 As Boolean = CDbl(num3) > 255.0
+                            If flag11 Then
+                                Me.ImageB(CInt(num5)) = Byte.MaxValue
+                            Else
+                                Me.ImageB(CInt(num5)) = CByte(num3)
+                            End If
+                        End If
+                    Next
+                Next
+            Case 4
+                Dim num18 As Integer = 0
+                Dim num19 As Integer = 0
+                Dim num20 As Integer = 240
+                Dim num21 As Integer = 240
+                Dim num22 As Integer = 0
+                While num20 - num18 > 0 Or num21 - num19 > 0
+                    Dim num23 As Integer = num19
+                    Dim num24 As Integer = num21
+                    For j As Integer = num23 To num24 Step 16
+                        Dim num25 As Long
+                        Dim num26 As Long
+
+                        num25 = CLng(num18)
+                        num26 = CLng((num18 + 15))
+
+                        For num27 As Long = num25 To num26
+                            Dim num28 As Long
+                            Dim num29 As Long
+
+                            num28 = CLng(j)
+                            num29 = CLng((j + 15))
+
+                            For num30 As Long = num28 To num29
+                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
+                                Me.ImageB(CInt(num5)) = CByte(num22)
+                            Next
+                        Next
+                        num22 += 1
+                    Next
+                    num18 += 16
+                    Dim num31 As Integer = num18
+                    Dim num32 As Integer = num20
+                    For i As Integer = num31 To num32 Step 16
+                        Dim num33 As Long
+                        Dim num34 As Long
+
+                        num33 = CLng(i)
+                        num34 = CLng((i + 15))
+
+                        For num27 As Long = num33 To num34
+                            Dim num35 As Long
+                            Dim num36 As Long
+
+                            num35 = CLng(num21)
+                            num36 = CLng((num21 + 15))
+
+                            For num30 As Long = num35 To num36
+                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
+                                Me.ImageB(CInt(num5)) = CByte(num22)
+                            Next
+                        Next
+                        num22 += 1
+                    Next
+                    num21 -= 16
+                    Dim num37 As Integer = num21
+                    Dim num38 As Integer = num19
+                    For j As Integer = num37 To num38 Step -16
+                        Dim num39 As Long
+                        Dim num40 As Long
+
+                        num39 = CLng(num20)
+                        num40 = CLng((num20 + 15))
+
+                        For num27 As Long = num39 To num40
+                            Dim num41 As Long
+                            Dim num42 As Long
+
+                            num41 = CLng(j)
+                            num42 = CLng((j + 15))
+
+                            For num30 As Long = num41 To num42
+                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
+                                Me.ImageB(CInt(num5)) = CByte(num22)
+                            Next
+                        Next
+                        num22 += 1
+                    Next
+                    num20 -= 16
+                    Dim num43 As Integer = num20
+                    Dim num44 As Integer = num18
+                    For i As Integer = num43 To num44 Step -16
+                        Dim num45 As Long
+                        Dim num46 As Long
+
+                        num45 = CLng(i)
+                        num46 = CLng((i + 15))
+
+                        For num27 As Long = num45 To num46
+                            Dim num47 As Long
+                            Dim num48 As Long
+
+                            num47 = CLng(num19)
+                            num48 = CLng((num19 + 15))
+
+                            For num30 As Long = num47 To num48
+                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
+                                Me.ImageB(CInt(num5)) = CByte(num22)
+                            Next
+                        Next
+                        num22 += 1
+                    Next
+                    num19 += 16
+                End While
+        End Select
+
+        GrayPalette()
+        putBitMapData()
+    End Function
+
+    Public Function GrayPalette() As Boolean
+        If mImageType = 0 Then
+            Dim palette As Imaging.ColorPalette = mImg.Palette
+            For i = 0 To palette.Entries.Length - 1
+                palette.Entries(i) = Color.FromArgb(255, i, i, i)
+            Next
+            mImg.Palette = palette
+            Return True
+        End If
+    End Function
+
+    Public Function AddSaltNoise() As Boolean '添加椒盐噪声
+        Dim i, j As Integer
+        Dim pos As Long
+        If mImageType <> 0 Then Return False
+        For k = 0 To mPixels * 0.01
+            i = Rnd() * (mHeight - 1)
+            j = Rnd() * (mWidth - 1)
+            pos = i * mFwidth + j
+            ImageB(pos) = IIf(Rnd() < 0.5, 255, 0)
+        Next
+        putBitMapData()
+        Return True
+    End Function
+
+    Public Function GetNxNPixels(ByVal i As Integer, ByVal j As Integer, ByVal n As Integer) As Byte()
+        '返回灰度图像NxN像素信息，边界使用0填充,(i,j)为中心的NxN像素,N=1,3,5,7,9...
+        Dim ret(n * n - 1) As Byte
+        Dim fi, fj As Integer
+        For ii = 0 To n - 1
+            For jj = 0 To n - 1
+                fi = i - n \ 2 + ii '取图像的第i行像素起始处
+                fj = j - n \ 2 + jj '取图像的第j列像素起始处
+                If fi < 0 Or fj < 0 Or fi > mHeight - 1 Or fj > mWidth - 1 Then '超出边界用0填充
+                    ret(ii * n + jj) = 0
+                Else
+                    ret(ii * n + jj) = getGrey(fi, fj)
+                End If
+            Next
+        Next
+        Return ret
+    End Function
+
+    Public Function GetNxNPixels(ByVal i As Integer, ByVal j As Integer, ByVal channel As Char, ByVal n As Integer) As Byte()
+        '返回RGB图像NxN像素信息，边界使用边缘值填充,(i,j)为中心的NxN像素,N=1,3,5,7,9...
+        Dim ret(n * n - 1) As Byte
+        Dim fi, fj As Integer
+        For ii = 0 To n - 1
+            For jj = 0 To n - 1
+                fi = i - n \ 2 + ii '取图像的第i行像素起始处
+                fj = j - n \ 2 + jj '取图像的第j列像素起始处
+                If fi < 0 Or fj < 0 Or fi > mHeight - 1 Or fj > mWidth - 1 Then '超出边界用0填充
+                    ret(ii * n + jj) = 0
+                Else
+                    ret(ii * n + jj) = GetRGB(fi, fj, channel)
+                End If
+            Next
+        Next
+        Return ret
+    End Function
+
+    Public Function ArrayMultiplySum(ByVal array_int As Integer(), ByVal array_byte As Byte()) As Integer
+        Dim ret As Single = 0
+        If array_int.Length <> array_byte.Length Then Return 0
+        For i = 0 To array_int.Length - 1
+            ret += array_int(i) * array_byte(i)
+        Next
+        Return ret
+    End Function
+
+    Private Function SetGray(ByVal i As Integer, ByVal j As Integer, ByVal value As Byte) As Boolean
+        If mImageType <> 0 Then Return False
+        Dim pos As Long
+        pos = i * mFwidth + j
+        ImageB(pos) = value
+    End Function
+
+    Public Function MedianFilter() As Boolean '中值过滤
+        Dim tempImg As New ImageClass
+        Dim g As Byte
+        Clone(tempImg)
+        If mImageType = 0 Then
+            Dim mV(8) As Byte
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    '获取二维中值滤波器模板
+                    mV(0) = tempImg.getGrey(i - 2, j)
+                    mV(1) = tempImg.getGrey(i - 1, j)
+                    For ii = 2 To 6
+                        mV(ii) = tempImg.getGrey(i, j + ii - 4)
+                    Next
+                    mV(7) = tempImg.getGrey(i + 1, j)
+                    mV(8) = tempImg.getGrey(i + 2, j)
+                    '排序模板中的像素
+                    For u = 0 To 4
+                        For v = u + 1 To 8
+                            If mV(u) > mV(v) Then
+                                g = mV(u)
+                                mV(u) = mV(v)
+                                mV(v) = g
+                            End If
+                        Next
+                    Next
+                    SetGray(i, j, mV(4))
+                Next
+            Next
+            putBitMapData()
+            Return True
+        End If
+    End Function
+
+    Public Function MeanFilter() As Boolean '均值过滤
+        Dim tempImg As New ImageClass
+        Dim sum As Integer
+        Clone(tempImg)
+        If mImageType = 0 Then
+            Dim mV() As Byte
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    mV = tempImg.GetNxNPixels(i, j, 3) '获取二维均值滤波器模板
+                    sum = 0
+                    For u = 0 To mV.Length - 1
+                        sum += mV(u)
+                    Next
+                    Dim g As Byte = CByte(sum / mV.Length)
+                    SetGray(i, j, CByte(sum / mV.Length))
+                Next
+            Next
+            putBitMapData()
+            Return True
+        End If
+    End Function
+
+    Public Function ConvFilter(ByVal filter() As Integer, ByVal deno As Integer, ByVal bind_flag As Boolean) As Boolean
+        Dim g As Integer
+
+        If mImageType = 0 Then
+            Dim newdata(mSize - 1) As Single
+            Dim pos As Long
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    Dim mv() As Byte = GetNxNPixels(i, j, Math.Sqrt(filter.Length))
+                    g = ArrayMultiplySum(filter, mv)
+                    pos = i * mFwidth + j
+                    newdata(pos) = g / deno
+                Next
+            Next
+            If bind_flag Then
+                NormArray2ImageB(newdata)
+            Else
+                CutoffArray2ImageB(newdata)
+            End If
+            putBitMapData()
+        ElseIf mImageType = 1 Then
+            Dim new_rgb_data(CSize - 1) As Single
+            Dim pos As Long
+            Dim gr, gg, gb As Single
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    pos = Cpos(i) + j * 3
+                    Dim mr() As Byte = GetNxNPixels(i, j, "r", Math.Sqrt(filter.Length))
+                    Dim mg() As Byte = GetNxNPixels(i, j, "g", Math.Sqrt(filter.Length))
+                    Dim mb() As Byte = GetNxNPixels(i, j, "b", Math.Sqrt(filter.Length))
+                    gr = ArrayMultiplySum(filter, mr)
+                    gg = ArrayMultiplySum(filter, mg)
+                    gb = ArrayMultiplySum(filter, mb)
+                    new_rgb_data(pos) = gb
+                    new_rgb_data(pos + 1) = gg
+                    new_rgb_data(pos + 2) = gr
+                Next
+            Next
+            If bind_flag Then
+                NormArray2ImageC(new_rgb_data)
+            Else
+                CutoffArray2ImageC(new_rgb_data)
+            End If
+            putBitMapData()
+        End If
+
+    End Function
+
+    Public Function GradientFilter(ByVal way As Integer, ByVal bind_flag As Boolean) As Boolean
+        Dim pos As Long
+
+        If mImageType = 0 Then
+            Dim new_data(mSize - 1) As Single
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    pos = i * mFwidth + j
+                    Select Case way
+                        Case 1 'G(i,j)=|f(i,j+1)-f(i,j)|+|f(i+1,j)-f(i,j)|
+                            new_data(pos) = Math.Abs(CSng(getGrey(i, j + 1)) - getGrey(i, j)) + Math.Abs(CSng(getGrey(i + 1, j)) - getGrey(i, j))
+                        Case 2 'G(i,j)=max(|f(i,j+1)-f(i,j)|,|f(i+1,j)-f(i,j)|)
+                            new_data(pos) = Math.Max(Math.Abs(CSng(getGrey(i, j + 1)) - getGrey(i, j)), Math.Abs(CSng(getGrey(i + 1, j)) - getGrey(i, j)))
+                        Case 3 'G(i,j)=sqrt(|f(i,j+1)-f(i,j)|^2+|f(i+1,j)-f(i,j)|^2)
+                            new_data(pos) = Math.Sqrt((CSng(getGrey(i, j + 1)) - getGrey(i, j)) ^ 2 + (CSng(getGrey(i + 1, j)) - getGrey(i, j)) ^ 2)
+                        Case 4 'G(i,j)=|f(i+1,j+1)-f(i,j)|+|f(i+1,j)-f(i,j+1)|
+                            new_data(pos) = Math.Abs(CSng(getGrey(i + 1, j + 1)) - getGrey(i, j)) + Math.Abs(CSng(getGrey(i + 1, j)) - getGrey(i, j + 1))
+                        Case 5 'G(i,j)=max(|f(i+1,j+1)-f(i,j)|+|f(i+1,j)-f(i,j+1)|)
+                            new_data(pos) = Math.Max(Math.Abs(CSng(getGrey(i + 1, j + 1)) - getGrey(i, j)), Math.Abs(CSng(getGrey(i + 1, j)) - getGrey(i, j + 1)))
+                        Case 6 'G(i,j)=sqrt(|f(i+1,j+1)-f(i,j)|^2+|f(i+1,j)-f(i,j+1)|^2)
+                            new_data(pos) = Math.Sqrt((CSng(getGrey(i + 1, j + 1)) - getGrey(i, j)) ^ 2 + (CSng(getGrey(i + 1, j)) - getGrey(i, j + 1)) ^ 2)
+                    End Select
+                Next
+            Next
+            If bind_flag Then
+                NormArray2ImageB(new_data)
+            Else
+                CutoffArray2ImageB(new_data)
+            End If
+            putBitMapData()
+        ElseIf mImageType = 1 Then
+            Dim new_rgb(CSize - 1) As Single
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    pos = Cpos(i) + j * 3
+                    Select Case way
+                        Case 1 'G(i,j)=|f(i,j+1)-f(i,j)|+|f(i+1,j)-f(i,j)|
+                            new_rgb(pos) = Math.Abs(CSng(GetRGB(i, j + 1, "b")) - GetRGB(i, j, "b")) + Math.Abs(CSng(GetRGB(i + 1, j, "b")) - GetRGB(i, j, "b"))
+                            new_rgb(pos + 1) = Math.Abs(CSng(GetRGB(i, j + 1, "g")) - GetRGB(i, j, "g")) + Math.Abs(CSng(GetRGB(i + 1, j, "g")) - GetRGB(i, j, "g"))
+                            new_rgb(pos + 2) = Math.Abs(CSng(GetRGB(i, j + 1, "r")) - GetRGB(i, j, "r")) + Math.Abs(CSng(GetRGB(i + 1, j, "r")) - GetRGB(i, j, "r"))
+
+                        Case 2 'G(i,j)=max(|f(i,j+1)-f(i,j)|,|f(i+1,j)-f(i,j)|)
+                            new_rgb(pos) = Math.Max(Math.Abs(CSng(GetRGB(i, j + 1, "b")) - GetRGB(i, j, "b")), Math.Abs(CSng(GetRGB(i + 1, j, "b")) - GetRGB(i, j, "b")))
+                            new_rgb(pos + 1) = Math.Max(Math.Abs(CSng(GetRGB(i, j + 1, "g")) - GetRGB(i, j, "g")), Math.Abs(CSng(GetRGB(i + 1, j, "g")) - GetRGB(i, j, "g")))
+                            new_rgb(pos + 2) = Math.Max(Math.Abs(CSng(GetRGB(i, j + 1, "r")) - GetRGB(i, j, "r")), Math.Abs(CSng(GetRGB(i + 1, j, "r")) - GetRGB(i, j, "r")))
+
+                        Case 3 'G(i,j)=sqrt(|f(i,j+1)-f(i,j)|^2+|f(i+1,j)-f(i,j)|^2)
+                            new_rgb(pos) = Math.Sqrt((CSng(GetRGB(i, j + 1, "b")) - GetRGB(i, j, "b")) ^ 2 + (CSng(GetRGB(i + 1, j, "b")) - GetRGB(i, j, "b")) ^ 2)
+                            new_rgb(pos + 1) = Math.Sqrt((CSng(GetRGB(i, j + 1, "g")) - GetRGB(i, j, "g")) ^ 2 + (CSng(GetRGB(i + 1, j, "g")) - GetRGB(i, j, "g")) ^ 2)
+                            new_rgb(pos + 2) = Math.Sqrt((CSng(GetRGB(i, j + 1, "r")) - GetRGB(i, j, "r")) ^ 2 + (CSng(GetRGB(i + 1, j, "r")) - GetRGB(i, j, "r")) ^ 2)
+
+                        Case 4 'G(i,j)=|f(i+1,j+1)-f(i,j)|+|f(i+1,j)-f(i,j+1)|
+                            new_rgb(pos) = Math.Abs(CSng(GetRGB(i + 1, j + 1, "b")) - GetRGB(i, j, "b")) + Math.Abs(CSng(GetRGB(i + 1, j, "b")) - GetRGB(i, j + 1, "b"))
+                            new_rgb(pos + 1) = Math.Abs(CSng(GetRGB(i + 1, j + 1, "g")) - GetRGB(i, j, "g")) + Math.Abs(CSng(GetRGB(i + 1, j, "g")) - GetRGB(i, j + 1, "g"))
+                            new_rgb(pos + 2) = Math.Abs(CSng(GetRGB(i + 1, j + 1, "r")) - GetRGB(i, j, "r")) + Math.Abs(CSng(GetRGB(i + 1, j, "r")) - GetRGB(i, j + 1, "r"))
+
+                        Case 5 'G(i,j)=max(|f(i+1,j+1)-f(i,j)|+|f(i+1,j)-f(i,j+1)|)
+                            new_rgb(pos) = Math.Max(Math.Abs(CSng(GetRGB(i + 1, j + 1, "b")) - GetRGB(i, j, "b")), Math.Abs(CSng(GetRGB(i + 1, j, "b")) - GetRGB(i, j + 1, "b")))
+                            new_rgb(pos + 1) = Math.Max(Math.Abs(CSng(GetRGB(i + 1, j + 1, "g")) - GetRGB(i, j, "g")), Math.Abs(CSng(GetRGB(i + 1, j, "g")) - GetRGB(i, j + 1, "g")))
+                            new_rgb(pos + 2) = Math.Max(Math.Abs(CSng(GetRGB(i + 1, j + 1, "r")) - GetRGB(i, j, "r")), Math.Abs(CSng(GetRGB(i + 1, j, "r")) - GetRGB(i, j + 1, "r")))
+
+                        Case 6 'G(i,j)=sqrt(|f(i+1,j+1)-f(i,j)|^2+|f(i+1,j)-f(i,j+1)|^2)
+                            new_rgb(pos) = Math.Sqrt((CSng(GetRGB(i + 1, j + 1, "b")) - GetRGB(i, j, "b")) ^ 2 + (CSng(GetRGB(i + 1, j, "b")) - GetRGB(i, j + 1, "b")) ^ 2)
+                            new_rgb(pos + 1) = Math.Sqrt((CSng(GetRGB(i + 1, j + 1, "g")) - GetRGB(i, j, "g")) ^ 2 + (CSng(GetRGB(i + 1, j, "g")) - GetRGB(i, j + 1, "g")) ^ 2)
+                            new_rgb(pos + 2) = Math.Sqrt((CSng(GetRGB(i + 1, j + 1, "r")) - GetRGB(i, j, "r")) ^ 2 + (CSng(GetRGB(i + 1, j, "r")) - GetRGB(i, j + 1, "r")) ^ 2)
+
+                    End Select
+                Next
+            Next
+            If bind_flag Then
+                NormArray2ImageC(new_rgb)
+            Else
+                CutoffArray2ImageC(new_rgb)
+            End If
+            putBitMapData()
+        End If
 
     End Function
 End Class
