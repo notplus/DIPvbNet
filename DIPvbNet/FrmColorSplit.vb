@@ -6,6 +6,9 @@
     'Private oImage As ImageClass
     Private flag As Boolean
     Private lastExchangeInverse As String '上次变换的逆变换
+    Private rflag As Boolean
+    Private gflag As Boolean
+    Private bflag As Boolean
     Public Function SetImageClass(ByVal mImage As ImageClass) As Boolean
         mImage.Clone(cImage)
         mImage.Clone(rImage)
@@ -14,15 +17,25 @@
         'mImage.Clone(oImage)
     End Function
     Private Sub FrmColorSplit_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim gNoChange(255), gZero(255) As Byte
-        flag = True
-        For i = 0 To 255
-            gNoChange(i) = i
-            gZero(i) = 0
-        Next
-        rImage.GrayTransform(gNoChange, gZero, gZero)
-        gImage.GrayTransform(gZero, gNoChange, gZero)
-        bImage.GrayTransform(gZero, gZero, gNoChange)
+        'Dim gNoChange(255), gZero(255) As Byte
+        'flag = True
+        'For i = 0 To 255
+        '    gNoChange(i) = i
+        '    gZero(i) = 0
+        'Next
+        'rImage.GrayTransform(gNoChange, gZero, gZero)
+        'gImage.GrayTransform(gZero, gNoChange, gZero)
+        'bImage.GrayTransform(gZero, gZero, gNoChange)
+        bImage.ConvertToGrayImageWithChannel(0)
+        gImage.ConvertToGrayImageWithChannel(1)
+        rImage.ConvertToGrayImageWithChannel(2)
+        bImage.SetBluePalette()
+        gImage.SetGreenPalette()
+        rImage.SetRedPalette()
+        bflag = True
+        gflag = True
+        rflag = True
+
         PictureBox2.Refresh()
         PictureBox3.Refresh()
         PictureBox4.Refresh()
@@ -95,5 +108,35 @@
         cImage.ExchangeChannel("GBR")
         lastExchangeInverse = "BRG"
         PictureBox1.Refresh()
+    End Sub
+
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
+        rflag = Not rflag
+        If rflag Then
+            rImage.SetGrayPalette()
+        Else
+            rImage.SetRedPalette()
+        End If
+        PictureBox2.Refresh()
+    End Sub
+
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
+        gflag = Not gflag
+        If gflag Then
+            gImage.SetGrayPalette()
+        Else
+            gImage.SetGreenPalette()
+        End If
+        PictureBox3.Refresh()
+    End Sub
+
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
+        bflag = Not bflag
+        If bflag Then
+            bImage.SetGrayPalette()
+        Else
+            bImage.SetBluePalette()
+        End If
+        PictureBox4.Refresh()
     End Sub
 End Class

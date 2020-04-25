@@ -17,7 +17,7 @@
 
 ### 克隆方法
 1. 打开vs，选择克隆或签出代码   
-![20200424233343](https://raw.githubusercontent.com/wuliutx/upload-pic/master/20200424233343.png)   
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0424/234406_9a541565_5204770.png "1.png")   
 2. 填入克隆地址 https://gitee.com/notplus/DIPvbNet.git   
-![20200424233515](https://raw.githubusercontent.com/wuliutx/upload-pic/master/20200424233515.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0424/234448_6986a6a0_5204770.png "2.png")     
 3. 打开解决方案即可。后续可通过团队资源管理器-同步-提取、拉取获取最新代码。

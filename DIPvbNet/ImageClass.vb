@@ -1297,6 +1297,7 @@
         Next
     End Function
     Public Function CreateImage(ByVal cols As Integer, ByVal rows As Integer, ByVal op As Integer) As Boolean
+        '该部分代码从示例程序反编译修改得到，关于图像生成的相关函数资料没有找到，暂时采取此种方式
         mImg = New Bitmap(cols, rows, Drawing.Imaging.PixelFormat.Format8bppIndexed)
         getBitMapData()
 
@@ -1311,59 +1312,42 @@
                     Next
                 Next
             Case 1
-                Dim num6 As Double = Math.Pow(CDbl(Me.mHeight) / 2.0, 2.0) + Math.Pow(CDbl(Me.mWidth) / 2.0, 2.0) / 10.0
-                Dim num As Integer = CInt(Math.Round(CDbl(Me.mHeight) / 2.0))
-                Dim num7 As Integer = CInt(Math.Round(CDbl(Me.mWidth) / 2.0))
+                Dim num6 As Double = Math.Pow(CDbl(mHeight) / 2.0, 2.0) + Math.Pow(CDbl(mWidth) / 2.0, 2.0) / 10.0
+                Dim num As Integer = CInt(Math.Round(CDbl(mHeight) / 2.0))
+                Dim num7 As Integer = CInt(Math.Round(CDbl(mWidth) / 2.0))
                 For i As Integer = 0 To mHeight - 1
                     For j As Integer = 0 To mWidth - 1
-                        Dim num10 As Single
+                        Dim g As Single
                         Dim num3 As Single = CSng((Math.Pow(CDbl((i - num)), 2.0) + Math.Pow(CDbl((j - num7)), 2.0)))
-                        num10 = CSng((Math.Exp(CDbl((-CDbl(num3))) / num6) * 255.0))
+                        g = CSng((Math.Exp(CDbl((-CDbl(num3))) / num6) * 255.0))
                         Dim pos As Long = i * mFwidth + j
-
-                        ImageB(pos) = CByte(num10)
+                        ImageB(pos) = CByte(g)
                     Next
                 Next
             Case 2
-                Dim num11 As Integer = Me.mHeight - 1
-                For i As Integer = 0 To num11
+                For i As Integer = 0 To mHeight - 1
                     Dim num As Integer = CInt(Math.Round(CDbl(i) / 20.0))
-                    Dim num12 As Integer = Me.mWidth - 1
-                    For j As Integer = 0 To num12
+                    For j As Integer = 0 To mWidth - 1
                         Dim num7 As Integer = CInt(Math.Round(CDbl(j) / 20.0))
-                        Dim num5 As Long = CLng((i * Me.mFwidth + j))
-                        Dim flag9 As Boolean = (num7 And 1 And (num And 1)) <> 0
-                        If flag9 Then
-                            Me.ImageB(CInt(num5)) = 0
+                        Dim pos As Long = CLng(i * mFwidth + j)
+
+                        If (num7 And 1 And (num And 1)) <> 0 Then
+                            ImageB(pos) = 0
                         Else
-                            Me.ImageB(CInt(num5)) = Byte.MaxValue
+                            ImageB(pos) = 255
                         End If
                     Next
                 Next
             Case 3
-                Dim num15 As Single = CSng((CDbl(Me.mWidth) / 5.0))
-                Dim num16 As Integer = Me.mHeight - 1
-                For i As Integer = 0 To num16
-                    Dim num17 As Integer = Me.mWidth - 1
+                Dim num15 As Single = CSng(CDbl(mWidth) / 5.0)
+                For i As Integer = 0 To mHeight - 1
+                    Dim num17 As Integer = mWidth - 1
                     For j As Integer = 0 To num17
                         Dim num3 As Single
-                        Dim num5 As Long
-                        Dim flag10 As Boolean
-
+                        Dim pos As Long
                         num3 = CSng(((Math.Sin(CDbl((CSng(i) / num15)) * 6.28) * Math.Sin(CDbl((CSng(j) / num15)) * 6.28) + 1.0) / 2.0 * 255.0))
-                        num5 = CLng((i * Me.mFwidth + j))
-                        flag10 = (CDbl(num3) < 0.0)
-
-                        If flag10 Then
-                            Me.ImageB(CInt(num5)) = 0
-                        Else
-                            Dim flag11 As Boolean = CDbl(num3) > 255.0
-                            If flag11 Then
-                                Me.ImageB(CInt(num5)) = Byte.MaxValue
-                            Else
-                                Me.ImageB(CInt(num5)) = CByte(num3)
-                            End If
-                        End If
+                        pos = CLng((i * mFwidth + j))
+                        ImageB(pos) = NormValue(num3)
                     Next
                 Next
             Case 4
@@ -1390,8 +1374,8 @@
                             num29 = CLng((j + 15))
 
                             For num30 As Long = num28 To num29
-                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
-                                Me.ImageB(CInt(num5)) = CByte(num22)
+                                Dim num5 As Long = num27 * CLng(mFwidth) + num30
+                                ImageB(CInt(num5)) = CByte(num22)
                             Next
                         Next
                         num22 += 1
@@ -1414,8 +1398,8 @@
                             num36 = CLng((num21 + 15))
 
                             For num30 As Long = num35 To num36
-                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
-                                Me.ImageB(CInt(num5)) = CByte(num22)
+                                Dim num5 As Long = num27 * CLng(mFwidth) + num30
+                                ImageB(CInt(num5)) = CByte(num22)
                             Next
                         Next
                         num22 += 1
@@ -1438,8 +1422,8 @@
                             num42 = CLng((j + 15))
 
                             For num30 As Long = num41 To num42
-                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
-                                Me.ImageB(CInt(num5)) = CByte(num22)
+                                Dim num5 As Long = num27 * CLng(mFwidth) + num30
+                                ImageB(CInt(num5)) = CByte(num22)
                             Next
                         Next
                         num22 += 1
@@ -1462,8 +1446,8 @@
                             num48 = CLng((num19 + 15))
 
                             For num30 As Long = num47 To num48
-                                Dim num5 As Long = num27 * CLng(Me.mFwidth) + num30
-                                Me.ImageB(CInt(num5)) = CByte(num22)
+                                Dim num5 As Long = num27 * CLng(mFwidth) + num30
+                                ImageB(CInt(num5)) = CByte(num22)
                             Next
                         Next
                         num22 += 1
@@ -1472,11 +1456,11 @@
                 End While
         End Select
 
-        GrayPalette()
+        SetGrayPalette()
         putBitMapData()
     End Function
 
-    Public Function GrayPalette() As Boolean
+    Public Function SetGrayPalette() As Boolean
         If mImageType = 0 Then
             Dim palette As Imaging.ColorPalette = mImg.Palette
             For i = 0 To palette.Entries.Length - 1
@@ -1735,4 +1719,55 @@
         End If
 
     End Function
+
+    Public Function ConvertToGrayImageWithChannel(ByVal channel As Integer) As Boolean 'channel 0 B, 1 G, 2 R
+        If mImageType = 0 Then Return False
+        mImg = New Bitmap(mWidth, mHeight, Drawing.Imaging.PixelFormat.Format8bppIndexed)
+        getBitMapData()
+        'mFwidth = (mWidth + 3) \ 4 * 4
+        'mImageType = 0
+        Dim posB, posC As Long
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                posB = i * mFwidth + j
+                posC = Cpos(i) + j * 3
+                ImageB(posB) = ImageC(posC + channel)
+            Next
+        Next
+        putBitMapData()
+        Return True
+    End Function
+
+    Public Function SetBluePalette() As Boolean
+        If mImageType = 1 Then Return False
+        Dim m_palette As Imaging.ColorPalette
+        m_palette = GetPalette()
+        For i = 0 To m_palette.Entries.Length - 1
+            m_palette.Entries(i) = Color.FromArgb(255, 0, 0, i)
+        Next
+        SetPalette(m_palette)
+        putBitMapData()
+    End Function
+    Public Function SetGreenPalette() As Boolean
+        If mImageType = 1 Then Return False
+        Dim m_palette As Imaging.ColorPalette
+        m_palette = GetPalette()
+        For i = 0 To m_palette.Entries.Length - 1
+            m_palette.Entries(i) = Color.FromArgb(255, 0, i, 0)
+        Next
+        SetPalette(m_palette)
+        putBitMapData()
+    End Function
+    Public Function SetRedPalette() As Boolean
+        If mImageType = 1 Then Return False
+        Dim m_palette As Imaging.ColorPalette
+        m_palette = GetPalette()
+        For i = 0 To m_palette.Entries.Length - 1
+            m_palette.Entries(i) = Color.FromArgb(255, i, 0, 0)
+        Next
+        SetPalette(m_palette)
+        putBitMapData()
+    End Function
+
+
 End Class
