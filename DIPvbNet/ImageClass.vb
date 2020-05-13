@@ -1769,5 +1769,183 @@
         putBitMapData()
     End Function
 
+    Public Function ConvertToGrayImage() As Boolean
+        If mImageType = 0 Then Return False
+        mImg = New Bitmap(mWidth, mHeight, Drawing.Imaging.PixelFormat.Format8bppIndexed)
+        getBitMapData()
+        Dim posB, posC As Long
+        Dim cb, cg, cr As Byte
+        For i = 0 To mHeight - 1
+            For j = 0 To mWidth - 1
+                posB = i * mFwidth + j
+                posC = Cpos(i) + j * 3
+                cb = ImageC(posC)
+                cg = ImageC(posC + 1)
+                cr = ImageC(posC + 2)
+                ImageB(posB) = Fix(cb * 0.114 + cg * 0.587 + cr * 0.299)
+            Next
+        Next
+        putBitMapData()
+        SetGrayPalette()
+        Return True
+    End Function
 
+    Public Function Rotate(ByVal type_size As Integer, ByVal type_way As Integer, ByVal angel As Double) As Boolean
+        '图像大小改变模式（0-改变，1-不改变）  计算方式（0-移交法，1-填充法）  
+        If mImageType = 0 Then
+            Dim PI As Double
+            Dim fSin, fCos As Double
+            Dim x0, y0 As Double
+            Dim i1, j1 As Integer
+            Dim i, j As Integer
+            PI = Math.Atan(1.0#) * 4 : fSin = Math.Sin(angel / 180.0 * PI) : fCos = Math.Cos(angel / 180 * PI)
+            x0 = mWidth / 2.0# : y0 = mHeight / 2.0#
+            If type_size = 1 Then
+                Dim new_imgdata(mSize - 1) As Byte
+                If type_way = 0 Then
+                    For i = 0 To mHeight - 1
+                        For j = 0 To mWidth - 1
+                            j1 = CInt((j - x0) * fCos - (i - y0) * fSin + x0)
+                            i1 = CInt((j - x0) * fSin + (i - y0) * fCos + y0)
+                            If i1 < 0 Or i1 > mHeight - 1 Or j1 < 0 Or j1 > mWidth - 1 Then
+                                Continue For
+                            End If
+                            new_imgdata(i1 * mFwidth + j1) = ImageB(i * mFwidth + j)
+                        Next
+                    Next
+
+                Else
+                    For i1 = 0 To mHeight - 1
+                        For j1 = 0 To mWidth - 1
+                            j = CInt((j1 - x0) * fCos + (i1 - y0) * fSin + x0)
+                            i = CInt(-(j1 - x0) * fSin + (i1 - y0) * fCos + y0)
+                            If i < 0 Or i > mHeight - 1 Or j < 0 Or j > mWidth - 1 Then
+                                Continue For
+                            End If
+                            new_imgdata(i1 * mFwidth + j1) = ImageB(i * mFwidth + j)
+                        Next
+                    Next
+                End If
+                Array.Copy(new_imgdata, ImageB, mSize)
+                putBitMapData()
+            Else
+                Dim new_height, new_width, new_fwidth As Long
+                new_width = Fix(mWidth * Math.Abs(fCos) + mHeight * Math.Abs(fSin))
+                new_height = Fix(mWidth * Math.Abs(fSin) + mHeight * Math.Abs(fCos))
+                new_fwidth = ((new_width + 3) \ 4) * 4
+                mImg = New Bitmap(new_width, new_height, Drawing.Imaging.PixelFormat.Format8bppIndexed)
+                Dim new_imgdata(new_fwidth * new_height - 1) As Byte
+                If type_way = 0 Then
+                    For i = 0 To mHeight - 1
+                        For j = 0 To mWidth - 1
+                            '[ ww/2 - cos(theta)*(w/2 - j) + sin(theta)*(h/2 - i), hh/2 - cos(theta)*(h/2 - i) - sin(theta)*(w/2 - j)]
+                            j1 = CInt((j - x0) * fCos - (i - y0) * fSin + (new_width) / 2.0#)
+                            i1 = CInt((j - x0) * fSin + (i - y0) * fCos + (new_height) / 2.0#)
+                            new_imgdata(i1 * new_fwidth + j1) = ImageB(i * mFwidth + j)
+                        Next
+                    Next
+                Else
+                    For i1 = 0 To new_height - 1
+                        For j1 = 0 To new_width - 1
+                            '[ w/2 - sin(theta)*(hh/2 - i1) + cos(theta)*(j1 - ww/2), h/2 - cos(theta)*(hh/2 - i1) - sin(theta)*(j1 - ww/2)]
+                            j = CInt((j1 - new_width / 2.0#) * fCos + (i1 - new_height / 2.0#) * fSin + x0)
+                            i = CInt(-(j1 - new_width / 2.0#) * fSin + (i1 - new_height / 2.0#) * fCos + y0)
+                            If i < 0 Or i > mHeight - 1 Or j < 0 Or j > mWidth - 1 Then
+                                Continue For
+                            End If
+                            new_imgdata(i1 * new_fwidth + j1) = ImageB(i * mFwidth + j)
+                        Next
+                    Next
+                End If
+                getBitMapData()
+                Array.Copy(new_imgdata, ImageB, mSize)
+                putBitMapData()
+                SetGrayPalette()
+            End If
+
+        ElseIf mImageType = 1 Then
+            Dim PI As Double
+            Dim fSin, fCos As Double
+            Dim x0, y0 As Double
+            Dim i1, j1 As Integer
+            Dim i, j As Integer
+            PI = Math.Atan(1.0#) * 4 : fSin = Math.Sin(angel / 180.0 * PI) : fCos = Math.Cos(angel / 180 * PI)
+            x0 = mWidth / 2.0# : y0 = mHeight / 2.0#
+            If type_size = 1 Then
+                Dim new_imgdata(CSize - 1) As Byte
+                If type_way = 0 Then
+                    For i = 0 To mHeight - 1
+                        For j = 0 To mWidth - 1
+                            j1 = CInt((j - x0) * fCos - (i - y0) * fSin + x0)
+                            i1 = CInt((j - x0) * fSin + (i - y0) * fCos + y0)
+                            If i1 < 0 Or i1 > mHeight - 1 Or j1 < 0 Or j1 > mWidth - 1 Then
+                                Continue For
+                            End If
+                            new_imgdata(Cpos(i1) + j1 * 3) = ImageC(Cpos(i) + j * 3)
+                            new_imgdata(Cpos(i1) + j1 * 3 + 1) = ImageC(Cpos(i) + j * 3 + 1)
+                            new_imgdata(Cpos(i1) + j1 * 3 + 2) = ImageC(Cpos(i) + j * 3 + 2)
+                        Next
+                    Next
+
+                Else
+                    For i1 = 0 To mHeight - 1
+                        For j1 = 0 To mWidth - 1
+                            j = CInt((j1 - x0) * fCos + (i1 - y0) * fSin + x0)
+                            i = CInt(-(j1 - x0) * fSin + (i1 - y0) * fCos + y0)
+                            If i < 0 Or i > mHeight - 1 Or j < 0 Or j > mWidth - 1 Then
+                                Continue For
+                            End If
+                            new_imgdata(Cpos(i1) + j1 * 3) = ImageC(Cpos(i) + j * 3)
+                            new_imgdata(Cpos(i1) + j1 * 3 + 1) = ImageC(Cpos(i) + j * 3 + 1)
+                            new_imgdata(Cpos(i1) + j1 * 3 + 2) = ImageC(Cpos(i) + j * 3 + 2)
+                        Next
+                    Next
+                End If
+                Array.Copy(new_imgdata, ImageC, CSize)
+                putBitMapData()
+            Else
+                Dim new_height, new_width, new_fwidth As Long
+                new_width = Fix(mWidth * Math.Abs(fCos) + mHeight * Math.Abs(fSin))
+                new_height = Fix(mWidth * Math.Abs(fSin) + mHeight * Math.Abs(fCos))
+                new_fwidth = ((new_width * 3 + 3) \ 4) * 4
+                mImg = New Bitmap(new_width, new_height, Drawing.Imaging.PixelFormat.Format24bppRgb)
+                Dim new_imgdata(new_fwidth * new_height - 1) As Byte
+                Dim new_Cpos(new_height - 1) As Long
+                For i = 0 To new_height - 1
+                    new_Cpos(i) = i * new_fwidth
+                Next i
+
+                If type_way = 0 Then
+                    For i = 0 To mHeight - 1
+                        For j = 0 To mWidth - 1
+                            '[ ww/2 - cos(theta)*(w/2 - j) + sin(theta)*(h/2 - i), hh/2 - cos(theta)*(h/2 - i) - sin(theta)*(w/2 - j)]
+                            j1 = CInt((j - x0) * fCos - (i - y0) * fSin + (new_width) / 2.0#)
+                            i1 = CInt((j - x0) * fSin + (i - y0) * fCos + (new_height) / 2.0#)
+                            new_imgdata(new_Cpos(i1) + j1 * 3) = ImageC(Cpos(i) + j * 3)
+                            new_imgdata(new_Cpos(i1) + j1 * 3 + 1) = ImageC(Cpos(i) + j * 3 + 1)
+                            new_imgdata(new_Cpos(i1) + j1 * 3 + 2) = ImageC(Cpos(i) + j * 3 + 2)
+                        Next
+                    Next
+                Else
+                    For i1 = 0 To new_height - 1
+                        For j1 = 0 To new_width - 1
+                            '[ w/2 - sin(theta)*(hh/2 - i1) + cos(theta)*(j1 - ww/2), h/2 - cos(theta)*(hh/2 - i1) - sin(theta)*(j1 - ww/2)]
+                            j = CInt((j1 - new_width / 2.0#) * fCos + (i1 - new_height / 2.0#) * fSin + x0)
+                            i = CInt(-(j1 - new_width / 2.0#) * fSin + (i1 - new_height / 2.0#) * fCos + y0)
+                            If i < 0 Or i > mHeight - 1 Or j < 0 Or j > mWidth - 1 Then
+                                Continue For
+                            End If
+                            new_imgdata(new_Cpos(i1) + j1 * 3) = ImageC(Cpos(i) + j * 3)
+                            new_imgdata(new_Cpos(i1) + j1 * 3 + 1) = ImageC(Cpos(i) + j * 3 + 1)
+                            new_imgdata(new_Cpos(i1) + j1 * 3 + 2) = ImageC(Cpos(i) + j * 3 + 2)
+                        Next
+                    Next
+                End If
+                getBitMapData()
+                Array.Copy(new_imgdata, ImageC, CSize)
+                putBitMapData()
+            End If
+        End If
+
+    End Function
 End Class

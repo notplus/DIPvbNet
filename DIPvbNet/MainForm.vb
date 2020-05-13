@@ -163,7 +163,7 @@
         End If
     End Sub
 
-    Private Sub 中心镜像ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 中心镜像ToolStripMenuItem.Click
+    Private Sub 中心镜像ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         mImage.MirrorO()
         Panel.Refresh()
     End Sub
@@ -194,7 +194,7 @@
         End If
     End Sub
 
-    Private Sub 上下翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 上下翻转ToolStripMenuItem.Click
+    Private Sub 上下翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         mImage.MirrorX()
         Panel.Refresh()
     End Sub
@@ -244,7 +244,7 @@
         ImgAlgebrOper(3)
     End Sub
 
-    Private Sub 左右翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 左右翻转ToolStripMenuItem.Click
+    Private Sub 左右翻转ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         mImage.MirrorY()
         Panel.Refresh()
     End Sub
@@ -313,6 +313,43 @@
         End If
     End Sub
 
+    Private Sub ResizeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResizeToolStripMenuItem.Click
+
+    End Sub
+
+    Private Sub X轴镜像ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles X轴镜像ToolStripMenuItem.Click
+        mImage.MirrorX()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub Y轴镜像ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Y轴镜像ToolStripMenuItem.Click
+        mImage.MirrorY()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 中心镜像ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles 中心镜像ToolStripMenuItem1.Click
+        mImage.MirrorO()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 彩色图像转灰度图像ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 彩色图像转灰度图像ToolStripMenuItem.Click
+        mImage.ConvertToGrayImage()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 旋转ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 旋转ToolStripMenuItem.Click
+        If Not FrmRotate.Visible Then
+            FrmRotate.m_Image = mImage
+            FrmRotate.Show(Me)
+        Else
+            FrmRotate.Refresh()
+        End If
+    End Sub
+
+    Private Sub ToolStripStatusLabel2_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel2.Click
+
+    End Sub
+
     Private Sub OpenImage()
         OpenFileDialog1.ShowDialog()
         If OpenFileDialog1.FileName = "" Or Dir(OpenFileDialog1.FileName) = "" Then
@@ -353,6 +390,10 @@
     End Sub
     Public Function DataChange() As Boolean
         Panel.Refresh()
+        isZoomAll = True
+        If mImage.isAvailable Then Panel.Refresh()
+        isZoomAll = False
+        ToolStripStatusLabel2.Text = "图像大小：" & mImage.Width & "*" & mImage.Height
         If HistogramForm.Visible Then
             mImage.Calculate_Histogram()
             HistogramForm.Refresh()
