@@ -112,6 +112,12 @@
     <Compile Include="FrmHistMatch.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmResize.Designer.vb">
+      <DependentUpon>FrmResize.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmResize.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmRotate.Designer.vb">
       <DependentUpon>FrmRotate.vb</DependentUpon>
     </Compile>
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmHistMatch.resx">
       <DependentUpon>FrmHistMatch.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmResize.resx">
+      <DependentUpon>FrmResize.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRotate.resx">
       <DependentUpon>FrmRotate.vb</DependentUpon>

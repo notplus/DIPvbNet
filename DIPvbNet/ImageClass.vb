@@ -1790,7 +1790,7 @@
         Return True
     End Function
 
-    Public Function Rotate(ByVal type_size As Integer, ByVal type_way As Integer, ByVal angel As Double) As Boolean
+    Public Function Rotate(ByVal type_size As Integer, ByVal type_way As Integer, ByVal angel As Double) As Boolean '使用最邻近元插值
         '图像大小改变模式（0-改变，1-不改变）  计算方式（0-移交法，1-填充法）  
         If mImageType = 0 Then
             Dim PI As Double
@@ -1947,5 +1947,61 @@
             End If
         End If
 
+    End Function
+
+    Public Function Resize(ByVal h As Long, ByVal w As Long) As Boolean '使用双线性插值
+        Dim cx, cy As Double
+        cx = CDbl(mWidth) / w
+        cy = CDbl(mHeight) / h
+        If mImageType = 0 Then
+            mImg = New Bitmap(w, h, Drawing.Imaging.PixelFormat.Format8bppIndexed)
+            Dim new_fwidth As Long = ((w + 3) \ 4) * 4
+            Dim new_imgdata(new_fwidth * h - 1) As Byte
+            Dim u, v As Double
+            Dim ii, jj As Double
+            For i = 0 To h - 1
+                For j = 0 To w - 1
+                    ii = cy * i : jj = cx * j
+                    u = ii - Fix(ii) : v = jj - Fix(jj)
+                    new_imgdata(i * new_fwidth + j) = (1 - u) * (1 - v) * getGrey(Fix(ii), Fix(jj)) +
+                        (1 - u) * v * getGrey(Fix(ii), Fix(jj) + 1) + u * (1 - v) * getGrey(Fix(ii) + 1, Fix(jj)) +
+                        u * v * getGrey(Fix(ii) + 1, Fix(jj) + 1)
+                    'new_imgdata(i * new_fwidth + j) = ImageB(Fix(cx * j) + Fix(cy * i) * mFwidth)
+                Next
+            Next
+            getBitMapData()
+            Array.Copy(new_imgdata, ImageB, mSize)
+            SetGrayPalette()
+            putBitMapData()
+        Else
+            mImg = New Bitmap(w, h, Drawing.Imaging.PixelFormat.Format24bppRgb)
+            Dim new_cwidth As Long = ((w * 3 + 3) \ 4) * 4
+            Dim new_imgdata(new_cwidth * h - 1) As Byte
+            Dim u, v As Double
+            Dim ii, jj As Double
+            Dim new_Cpos(h - 1) As Long
+            For i = 0 To h - 1
+                new_Cpos(i) = i * new_cwidth
+            Next i
+            For i = 0 To h - 1
+                For j = 0 To w - 1
+                    ii = cy * i : jj = cx * j
+                    u = ii - Fix(ii) : v = jj - Fix(jj)
+
+                    new_imgdata(new_Cpos(i) + j * 3) = (1 - u) * (1 - v) * GetRGB(Fix(ii), Fix(jj), "b") +
+                        (1 - u) * v * GetRGB(Fix(ii), Fix(jj) + 1, "b") + u * (1 - v) * GetRGB(Fix(ii) + 1, Fix(jj), "b") +
+                        u * v * GetRGB(Fix(ii) + 1, Fix(jj) + 1, "b")
+                    new_imgdata(new_Cpos(i) + j * 3 + 1) = (1 - u) * (1 - v) * GetRGB(Fix(ii), Fix(jj), "g") +
+                        (1 - u) * v * GetRGB(Fix(ii), Fix(jj) + 1, "g") + u * (1 - v) * GetRGB(Fix(ii) + 1, Fix(jj), "g") +
+                        u * v * GetRGB(Fix(ii) + 1, Fix(jj) + 1, "g")
+                    new_imgdata(new_Cpos(i) + j * 3 + 2) = (1 - u) * (1 - v) * GetRGB(Fix(ii), Fix(jj), "r") +
+                        (1 - u) * v * GetRGB(Fix(ii), Fix(jj) + 1, "r") + u * (1 - v) * GetRGB(Fix(ii) + 1, Fix(jj), "r") +
+                        u * v * GetRGB(Fix(ii) + 1, Fix(jj) + 1, "r")
+                Next
+            Next
+            getBitMapData()
+            Array.Copy(new_imgdata, ImageC, CSize)
+            putBitMapData()
+        End If
     End Function
 End Class

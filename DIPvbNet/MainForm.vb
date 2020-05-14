@@ -314,7 +314,12 @@
     End Sub
 
     Private Sub ResizeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResizeToolStripMenuItem.Click
-
+        If Not FrmResize.Visible Then
+            FrmResize.m_Image = mImage
+            FrmResize.Show(Me)
+        Else
+            FrmResize.Refresh()
+        End If
     End Sub
 
     Private Sub X轴镜像ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles X轴镜像ToolStripMenuItem.Click
