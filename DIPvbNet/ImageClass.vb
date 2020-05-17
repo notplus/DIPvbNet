@@ -31,7 +31,6 @@
     Public pBar As ToolStripProgressBar
     Private matHist As System.Drawing.Drawing2D.Matrix
 
-
     ' 读取图像文件。实现图像对象由文件初始化的过程
     Public Function ReadImage(ByVal ImageName As String) As Integer
         If (Dir(ImageName) = "") Then  '检查要读取的图像文件是否存在？
@@ -1194,6 +1193,7 @@
                         Else
                             'ImageB(pos) = 255
                             tempDoubleArray(pos) = 9999
+                            tempDoubleArray(pos) = 255
                         End If
                     Next
                 Next
@@ -2004,4 +2004,43 @@
             putBitMapData()
         End If
     End Function
+
+    Public Function GeoCorrect(ByVal w As Long, ByVal h As Long, ByVal minX As Double, ByVal minY As Double, ByVal type_gray As Integer) As Boolean
+        If mImageType <> 0 Then Return False
+
+        Dim new_fwidth = ((w + 3) \ 4) * 4
+        Dim new_data(new_fwidth * h - 1) As Byte
+        Dim i, j As Integer
+        Dim i1, j1 As Integer
+        Dim tx, ty As Double
+
+        If type_gray = 0 Then ' 填充法
+            For i1 = 0 To h - 1
+                For j1 = 0 To w - 1
+                    FrmGeoCorrection.Transfer(j1, i1, j, i)
+                    new_data(i1 * new_fwidth + j1) = getGrey(i, j)
+                Next
+            Next
+        Else '移交法
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    FrmGeoCorrection.Transfer(j, i, tx, ty)
+                    j1 = Fix(tx - minX)
+                    i1 = Fix(ty - minY)
+                    If i1 < 0 Or i1 > h - 1 Or j1 < 0 Or j1 > w - 1 Then
+                        Continue For
+                    Else
+                        new_data(i1 * new_fwidth + j1) = getGrey(i, j)
+                    End If
+                Next
+            Next
+        End If
+        mImg = New Bitmap(w, h, Imaging.PixelFormat.Format8bppIndexed)
+        SetGrayPalette()
+        getBitMapData()
+        Array.Copy(new_data, ImageB, mSize)
+        putBitMapData()
+        Return True
+    End Function
+
 End Class

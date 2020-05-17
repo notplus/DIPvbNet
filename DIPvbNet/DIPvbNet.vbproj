@@ -100,6 +100,12 @@
     <Compile Include="FrmEditPalette.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmGeoCorrection.Designer.vb">
+      <DependentUpon>FrmGeoCorrection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGeoCorrection.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmGradientFilter.Designer.vb">
       <DependentUpon>FrmGradientFilter.vb</DependentUpon>
     </Compile>
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmEditPalette.resx">
       <DependentUpon>FrmEditPalette.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGeoCorrection.resx">
+      <DependentUpon>FrmGeoCorrection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGradientFilter.resx">
       <DependentUpon>FrmGradientFilter.vb</DependentUpon>

@@ -16,7 +16,7 @@
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim type_size, type_way, type_gray_way As Integer
+        Dim type_size, type_way As Integer
         type_size = IIf(RadioButton1.Checked, 0, 1)
         type_way = IIf(RadioButton3.Checked, 0, 1)
         Dim angle As Double

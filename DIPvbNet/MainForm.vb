@@ -8,6 +8,7 @@
     Private picMX0 As Single, picMY0 As Single
     Private isZoom As Boolean
     Private winX0 As Single, winY0 As Single
+    Public waitClick As Boolean
     Dim theRectangle As New Rectangle(New Point(0, 0), New Size(0, 0))
     Dim startPoint As Point
 
@@ -122,6 +123,7 @@
         mImage.ReadImage(ImageName)
         ToolStripStatusLabel2.Text = "图像大小：" & mImage.Width & "*" & mImage.Height
         'mImage.Display(Panel.CreateGraphics, mImage.Width, mImage.Height)
+        waitClick = False
     End Sub
 
     Private Sub MainForm_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseWheel
@@ -168,9 +170,6 @@
         Panel.Refresh()
     End Sub
 
-    Private Sub Panel_Click(sender As Object, e As EventArgs) Handles Panel.Click
-
-    End Sub
 
     Private Sub 灰度变换ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 灰度变换ToolStripMenuItem.Click
         mImage.Calculate_Histogram()
@@ -355,6 +354,16 @@
 
     End Sub
 
+    Private Sub 几何纠正ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 几何纠正ToolStripMenuItem.Click
+        If Not FrmGeoCorrection.Visible Then
+            FrmGeoCorrection.m_Image = mImage
+            FrmGeoCorrection.Show(Me)
+            Panel.Cursor = Cursors.Cross
+        Else
+            FrmGeoCorrection.Refresh()
+        End If
+    End Sub
+
     Private Sub OpenImage()
         OpenFileDialog1.ShowDialog()
         If OpenFileDialog1.FileName = "" Or Dir(OpenFileDialog1.FileName) = "" Then
@@ -425,4 +434,11 @@
         mImage.AlgebrOper(imgB, op)
         Panel.Refresh()
     End Function
+
+    Private Sub Panel_MouseClick(sender As Object, e As MouseEventArgs) Handles Panel.MouseClick
+        If waitClick = True Then
+            FrmGeoCorrection.SetPoint(e.Location)
+
+        End If
+    End Sub
 End Class
