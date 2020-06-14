@@ -1542,17 +1542,11 @@
         Dim g As Byte
         Clone(tempImg)
         If mImageType = 0 Then
-            Dim mV(8) As Byte
+            Dim mV() As Byte
             For i = 0 To mHeight - 1
                 For j = 0 To mWidth - 1
                     '获取二维中值滤波器模板
-                    mV(0) = tempImg.getGrey(i - 2, j)
-                    mV(1) = tempImg.getGrey(i - 1, j)
-                    For ii = 2 To 6
-                        mV(ii) = tempImg.getGrey(i, j + ii - 4)
-                    Next
-                    mV(7) = tempImg.getGrey(i + 1, j)
-                    mV(8) = tempImg.getGrey(i + 2, j)
+                    mV = tempImg.GetNxNPixels(i, j, 3)
                     '排序模板中的像素
                     For u = 0 To 4
                         For v = u + 1 To 8
@@ -1584,7 +1578,6 @@
                     For u = 0 To mV.Length - 1
                         sum += mV(u)
                     Next
-                    Dim g As Byte = CByte(sum / mV.Length)
                     SetGray(i, j, CByte(sum / mV.Length))
                 Next
             Next
@@ -2041,6 +2034,89 @@
         Array.Copy(new_data, ImageB, mSize)
         putBitMapData()
         Return True
+    End Function
+
+    Public Function KMedianFilter() As Boolean '中值过滤-KNN
+        Dim tempImg As New ImageClass
+        Dim g As Byte
+        Dim tempInt As Integer
+        Clone(tempImg)
+        If mImageType = 0 Then
+            Dim mV() As Byte
+            Dim sV(8) As Byte
+            Dim sI(8) As Byte
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    '获取二维中值滤波器模板
+                    mV = tempImg.GetNxNPixels(i, j, 3)
+                    For u = 0 To 8
+                        tempInt = Math.Abs(CInt(mV(u)) - CInt(mV(4)))
+                        sV(u) = CByte(tempInt)
+                        sI(u) = u
+                    Next
+                    '排序
+                    For u = 0 To 7
+                        For v = u + 1 To 8
+                            If sV(u) > sV(v) Then
+                                g = sV(u)
+                                sV(u) = sV(v)
+                                sV(v) = g
+                                g = sI(u)
+                                sI(u) = sI(v)
+                                sI(v) = g
+                            End If
+                        Next
+                    Next
+                    SetGray(i, j, mV(sI(1)))
+                Next
+            Next
+            putBitMapData()
+            Return True
+        End If
+    End Function
+
+    Public Function KMeanFilter() As Boolean '均值过滤-KNN
+        Dim tempImg As New ImageClass
+        Dim sum As Integer
+        Dim g As Byte
+        Dim tempInt As Integer
+        Clone(tempImg)
+        If mImageType = 0 Then
+            Dim mV() As Byte
+            Dim sV(8) As Byte
+            Dim sI(8) As Byte
+            For i = 0 To mHeight - 1
+                For j = 0 To mWidth - 1
+                    '获取二维中值滤波器模板
+                    mV = tempImg.GetNxNPixels(i, j, 3)
+                    For u = 0 To 8
+                        tempInt = Math.Abs(CInt(mV(u)) - CInt(mV(4)))
+                        sV(u) = CByte(tempInt)
+                        sI(u) = u
+                    Next
+                    '排序
+                    For u = 0 To 7
+                        For v = u + 1 To 8
+                            If sV(u) > sV(v) Then
+                                g = sV(u)
+                                sV(u) = sV(v)
+                                sV(v) = g
+                                g = sI(u)
+                                sI(u) = sI(v)
+                                sI(v) = g
+                            End If
+                        Next
+                    Next
+                    sum = 0
+                    For u = 0 To 2
+                        sum += mV(sI(u))
+                    Next
+                    SetGray(i, j, CByte(sum / 3))
+                Next
+            Next
+            putBitMapData()
+            Return True
+        End If
     End Function
 
 End Class

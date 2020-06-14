@@ -381,6 +381,16 @@
         End If
     End Sub
 
+    Private Sub 中值过滤保持边界ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 中值过滤保持边界ToolStripMenuItem.Click
+        mImage.KMedianFilter()
+        Panel.Refresh()
+    End Sub
+
+    Private Sub 均值过滤保持边界ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 均值过滤保持边界ToolStripMenuItem.Click
+        mImage.KMeanFilter()
+        Panel.Refresh()
+    End Sub
+
     Private Sub mnu灰度直方图_Click(sender As System.Object, e As System.EventArgs) Handles mnu灰度直方图.Click
         mImage.Calculate_Histogram()
         If Not HistogramForm.Visible Then
